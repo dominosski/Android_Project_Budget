@@ -1,5 +1,6 @@
 package com.example.mybank.Database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -29,15 +30,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createShoppingTable = "CREATE TABLE shopping (_id INTEGER PRIMARY KEY AUTOINCREMENT, item_id INTEGER, " +
                                     "user_id INTEGER, transaction_id INTEGER, price DOUBLE, date DATE, description TEXT)";
 
-        String createInvestmentTable = "CREATE TABLE investment (_id INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE, " +
+        String createInvestmentTable = "CREATE TABLE investments (_id INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE, " +
                 "monthly_roi DOUBLE, name TEXT, init_date DATE, finish_date DATE, user_id INTEGER, transaction_id INTEGER)";
 
         String createLoansTable = "CREATE TABLE loans (_id INTEGER PRIMARY KEY AUTOINCREMENT, init_date DATE, finish_date DATE," +
-                "init_amount DOUBLE, remained_amount DOUBLE, monthly_payment DOUBLE, monthly_roi DOUBLE)";
+                "init_amount DOUBLE, remained_amount DOUBLE, monthly_payment DOUBLE, monthly_roi DOUBLE, name TEXT, user_id INTEGER)";
+
+        String createTransactionTable = "CREATE TABLE transactions (_id INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE, date DATE," +
+                "type TEXT, user_ID INTEGER, recipient TEXT)";
+
+        String createItemsTable = "CREATE TABLE items (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, image_url TEXT," +
+                "description TEXT)";
 
         db.execSQL(createUserTable);
         db.execSQL(createShoppingTable);
         db.execSQL(createInvestmentTable);
+        db.execSQL(createLoansTable);
+        db.execSQL(createTransactionTable);
+        db.execSQL(createItemsTable);
+
+        addInitialItems(db);
+    }
+    
+    private void addInitialItems(SQLiteDatabase db)
+    {
+        Log.d(TAG, "addInitialItems: started");
+        ContentValues values = new ContentValues();
+        values.put("name", "bike");
+        values.put("description", "The perfect bike for you!");
+        db.insert("items", null, values);
     }
 
 
