@@ -31,6 +31,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
 
+    private DoesUserExist doesUserExist;
+    private RegisterUser registerUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,13 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 initRegister();
+            }
+        });
+        txtLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -64,6 +74,9 @@ public class RegisterActivity extends AppCompatActivity {
         else
         {
             txtWarning.setVisibility(View.GONE);
+
+            doesUserExist = new DoesUserExist();
+            doesUserExist.execute(email);
         }
     }
 
@@ -126,7 +139,8 @@ public class RegisterActivity extends AppCompatActivity {
             else
             {
                 txtWarning.setVisibility(View.GONE);
-                
+                registerUser = new RegisterUser();
+                registerUser.execute();
             }
         }
     }
@@ -264,5 +278,20 @@ public class RegisterActivity extends AppCompatActivity {
         txtWarning = (TextView)findViewById(R.id.txtWarning);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
+        if(null!= doesUserExist)
+        {
+            if(!doesUserExist.isCancelled())
+            {
+                doesUserExist.cancel(true);
+            }
+            if(!registerUser.isCancelled())
+            {
+                registerUser.cancel(true);
+            }
+        }
+    }
 }
