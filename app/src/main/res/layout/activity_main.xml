@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/toolbar"
@@ -17,7 +17,9 @@
         android:id="@+id/bottomNavView"
         android:layout_alignParentBottom="true"
         android:background="@drawable/background_toolbar"
-        app:menu="@menu/bottom_nav_menu"/>
+        app:menu="@menu/bottom_nav_menu"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:itemIconTint="@color/bottom_nav_color"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -43,7 +45,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/firstRelLayout">
+                    android:id="@+id/firstRelLayout"
+                    android:layout_marginTop="10dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -80,7 +83,7 @@
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:id="@+id/profitChart"
-                        android:layout_toRightOf="@id/dailySpentChart"
+                        android:layout_toRightOf="@id/profitChart"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="20dp"/>
                 </RelativeLayout>

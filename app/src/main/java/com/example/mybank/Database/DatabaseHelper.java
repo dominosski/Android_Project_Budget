@@ -37,7 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "init_amount DOUBLE, remained_amount DOUBLE, monthly_payment DOUBLE, monthly_roi DOUBLE, name TEXT, user_id INTEGER)";
 
         String createTransactionTable = "CREATE TABLE transactions (_id INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE, date DATE," +
-                "type TEXT, user_ID INTEGER, recipient TEXT)";
+                "type TEXT, user_ID INTEGER, recipient TEXT, description TEXT)";
 
         String createItemsTable = "CREATE TABLE items (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, image_url TEXT," +
                 "description TEXT)";
@@ -50,8 +50,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createItemsTable);
 
         addInitialItems(db);
+        addTestTransaction(db);
     }
-    
+
+    private void addTestTransaction(SQLiteDatabase db) {
+        Log.d(TAG, "addTestTransaction: started");
+        ContentValues values = new ContentValues();
+        values.put("_id", 0);
+        values.put("amount", 10.5);
+        values.put("date", "2020-07-20");
+        values.put("type", "shopping");
+        values.put("user_id", 1);
+        values.put("description", "Grocery shopping");
+        values.put("recipient", "Walmart");
+
+        long newTransactionId = db.insert("transactions", null, values);
+        Log.d(TAG, "addTestTransaction: transaction id: " + newTransactionId);
+
+    }
+
     private void addInitialItems(SQLiteDatabase db)
     {
         Log.d(TAG, "addInitialItems: started");
