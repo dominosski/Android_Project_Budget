@@ -35,7 +35,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_transaction, parent, false);
         ViewHolder holder = new ViewHolder(view);
 
-        return null;
+        return holder;
     }
 
     @Override

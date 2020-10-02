@@ -27,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 " password TEXT NOT NULL," + "first_name TEXT, " + "last_name TEXT, " +
                 "address TEXT, " + "image_url TEXT, " + "remained_amount DOUBLE)";
 
-        String createShoppingTable = "CREATE TABLE shopping (_id INTEGER PRIMARY KEY AUTOINCREMENT, item_id INTEGER, " +
+        String createShoppingTable = "CREATE TABLE shopping (_id INTEGER PRIMARY KEY AUTOINCREMENT, item_id INTEGER," +
                                     "user_id INTEGER, transaction_id INTEGER, price DOUBLE, date DATE, description TEXT)";
 
         String createInvestmentTable = "CREATE TABLE investments (_id INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE, " +
@@ -37,7 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "init_amount DOUBLE, remained_amount DOUBLE, monthly_payment DOUBLE, monthly_roi DOUBLE, name TEXT, user_id INTEGER)";
 
         String createTransactionTable = "CREATE TABLE transactions (_id INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE, date DATE," +
-                "type TEXT, user_ID INTEGER, recipient TEXT, description TEXT)";
+                "type TEXT, user_id INTEGER, recipient TEXT, description TEXT)";
 
         String createItemsTable = "CREATE TABLE items (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, image_url TEXT," +
                 "description TEXT)";
@@ -51,6 +51,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         addInitialItems(db);
         addTestTransaction(db);
+        addTestProfit(db);
+        addTestShopping(db);
+    }
+
+    private void addTestShopping(SQLiteDatabase db) {
+        Log.d(TAG, "addTestShopping: started");
+        ContentValues firstValues = new ContentValues();
+        firstValues.put("item_id", 1);
+        firstValues.put("transaction_id", 1);
+        firstValues.put("user_id", 1);
+        firstValues.put("price", 10.0);
+        firstValues.put("description", "First of all");
+        firstValues.put("date", "2020-05-01");
+        db.insert("shopping", null, firstValues);
+
+        ContentValues secondValues = new ContentValues();
+        secondValues.put("item_id", 2);
+        secondValues.put("transaction_id",2);
+        secondValues.put("user_id", 1);
+        secondValues.put("price", 15.0);
+        secondValues.put("description", "Second of all");
+        secondValues.put("date", "2020-05-02");
+        db.insert("shopping", null, secondValues);
+    }
+
+    private void addTestProfit(SQLiteDatabase db) {
+        Log.d(TAG, "addTestProfit: started");
+        ContentValues firstValues = new ContentValues();
+        firstValues.put("amount", 25.0);
+        firstValues.put("type", "profit");
+        firstValues.put("date", "2020-09-28");
+        firstValues.put("description", "monthly profit from ordering gears");
+        firstValues.put("user_id", 1);
+        firstValues.put("recipient", "AMD company");
+        db.insert("transactions", null, firstValues);
+
+        ContentValues secondValues = new ContentValues();
+        secondValues.put("amount", 40.0);
+        secondValues.put("type", "profit");
+        secondValues.put("date", "2020-07-23");
+        secondValues.put("description", "ordering food");
+        secondValues.put("user_id", 1);
+        secondValues.put("recipient", "Healthy food");
+        db.insert("transactions", null, secondValues);
     }
 
     private void addTestTransaction(SQLiteDatabase db) {
