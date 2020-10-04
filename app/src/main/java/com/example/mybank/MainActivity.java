@@ -1,10 +1,8 @@
 package com.example.mybank;
 
-import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,14 +17,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.example.mybank.Adapters.TransactionAdapter;
 import com.example.mybank.Authentication.LoginActivity;
-import com.example.mybank.Authentication.RegisterActivity;
 import com.example.mybank.Database.DatabaseHelper;
 import com.example.mybank.Dialogs.AddTransactionDialog;
 import com.example.mybank.Models.Shopping;
@@ -34,7 +30,6 @@ import com.example.mybank.Models.Transaction;
 import com.example.mybank.Models.User;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -46,7 +41,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -434,6 +428,7 @@ public class MainActivity extends AppCompatActivity {
                         int month = calendar.get(Calendar.MONTH);
                         Log.d(TAG, "onPostExecute: month: " + month);
 
+
                         if(calendar.get(Calendar.YEAR) == year)
                         {
                             boolean doesMonthExist = false;
@@ -511,12 +506,12 @@ public class MainActivity extends AppCompatActivity {
         protected ArrayList<Shopping> doInBackground(Integer... integers) {
             try {
                 SQLiteDatabase db = databaseHelper.getReadableDatabase();
-                Cursor cursor = db.query("shopping", new String[]{"date", "price"}, "user_id=?", 
-                        new String[]{String.valueOf(integers[0])}, null, null, null);
+                Cursor cursor = db.query("shopping", new String[] {"date", "price"}, "user_id=?",
+                        new String[] {String.valueOf(integers[0])}, null, null, null);
 
                 if(null != cursor)
                 {
-                    if(cursor.moveToNext())
+                    if(cursor.moveToFirst())
                     {
                         ArrayList<Shopping> shoppings = new ArrayList<>();
                         for (int i = 0; i < cursor.getCount() ; i++) {
@@ -526,7 +521,6 @@ public class MainActivity extends AppCompatActivity {
                             shoppings.add(shopping);
                             cursor.moveToNext();
                         }
-
                         cursor.close();
                         db.close();
                         return shoppings;
@@ -556,18 +550,21 @@ public class MainActivity extends AppCompatActivity {
 
             if(null!=shoppings)
             {
+                Log.d(TAG, "onPostExecute: shoppings is not null");
                 ArrayList<BarEntry> entries = new ArrayList<>();
                 for(Shopping s: shoppings)
                 {
                     try {
+                        Log.d(TAG, "onPostExecute: test date");
                         Date date = new SimpleDateFormat("yyyy-MM-dd").parse(s.getDate());
                         Calendar calendar = Calendar.getInstance();
-                        int month = calendar.get(Calendar.MONTH)+1;
                         calendar.setTime(date);
+                        int month = calendar.get(Calendar.MONTH)+1;
                         int day = calendar.get(Calendar.DAY_OF_MONTH)+1;
 
-                        if((calendar.get(Calendar.MONTH)+1) == month)
+                        if(calendar.get(Calendar.MONTH)+1 == month)
                         {
+                            Log.d(TAG, "onPostExecute: test month");
                             boolean doesDayExist = false;
                             for(BarEntry e: entries)
                             {
@@ -582,7 +579,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             if(!doesDayExist)
                             {
-                                entries.add(new BarEntry(day, (float)s.getPrice()));
+                                entries.add(new BarEntry(day, (float) s.getPrice()));
                             }
                             else
                             {
@@ -590,18 +587,27 @@ public class MainActivity extends AppCompatActivity {
                                 {
                                     if(e.getX() == day)
                                     {
-                                        e.setY(e.getY() + (float) + s.getPrice());
+                                        e.setY(e.getY() + (float)s.getPrice());
                                     }
                                 }
                             }
                         }
                     } catch (ParseException e) {
+                        Log.d(TAG, "onPostExecute: exception");
                         e.printStackTrace();
                     }
+                }
+                for(BarEntry e: entries)
+                {
+                    Log.d(TAG, "onPostExecute: xx: " + e.getX() + " y: " + e.getY());
                 }
 
                 BarDataSet dataSet = new BarDataSet(entries, "Shopping chart");
                 BarData data = new BarData(dataSet);
+                barChart.getAxisRight().setEnabled(false);
+                XAxis xAxis = barChart.getXAxis();
+                xAxis.setAxisMaximum(31);
+                xAxis.setEnabled(false);
                 barChart.setData(data);
                 barChart.invalidate();
             }
@@ -657,7 +663,7 @@ public class MainActivity extends AppCompatActivity {
         txtAmount = (TextView)findViewById(R.id.txtAmount);
         txtWelcome = (TextView)findViewById(R.id.txtWelcome);
         barChart = (BarChart)findViewById(R.id.profitChart);
-        lineChart = (LineChart)findViewById(R.id.dailySpentChart);
+        lineChart = (LineChart)findViewById(R.id.lineChart);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottomNavView);
         fbAddTransaction = (FloatingActionButton)findViewById(R.id.fbAddTransaction);
