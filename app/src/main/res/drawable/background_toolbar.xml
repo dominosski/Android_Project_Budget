@@ -3,11 +3,9 @@
     <gradient
         android:startColor="@color/light_grey"
         android:endColor="@color/white"
-        android:angle="90"/>
+        android:angle="-90"/>
     <stroke
         android:color="#000"
         android:width="0.5dp"/>
-
-
 
 </shape>

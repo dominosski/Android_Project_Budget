@@ -27,8 +27,6 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     }
 
-
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,7 +43,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         holder.date.setText(transactions.get(position).getDate());
         holder.description.setText(transactions.get(position).getDescription());
         holder.sender.setText(transactions.get(position).getRecipient());
-        holder.transactionID.setText(String.valueOf(transactions.get(position).get_id()));
+        holder.transactionID.setText("Transaction ID: " + String.valueOf(transactions.get(position).get_id()));
         double amount = transactions.get(position).getAmount();
         if(amount > 0)
         {

@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"
+        android:id="@+id/toolBar"
         android:background="@drawable/background_toolbar"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -33,7 +34,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/toolBar"
         android:layout_marginBottom="50dp">
 
         <androidx.core.widget.NestedScrollView

@@ -3,6 +3,7 @@ package com.example.mybank;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,11 +16,12 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
 
 import com.example.mybank.Adapters.TransactionAdapter;
 import com.example.mybank.Authentication.LoginActivity;
@@ -80,7 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
         initBottomNavView();
+
         setSupportActionBar(toolbar);
+
 
         utils = new Utils(this);
         User user = utils.isUserLoggedIn();
@@ -603,11 +607,17 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 BarDataSet dataSet = new BarDataSet(entries, "Shopping chart");
+                dataSet.setColor(Color.RED);
                 BarData data = new BarData(dataSet);
                 barChart.getAxisRight().setEnabled(false);
                 XAxis xAxis = barChart.getXAxis();
                 xAxis.setAxisMaximum(31);
                 xAxis.setEnabled(false);
+                YAxis yAxis = barChart.getAxisLeft();
+                yAxis.setAxisMaximum(50);
+                yAxis.setAxisMinimum(10);
+                yAxis.setDrawGridLines(false);
+                barChart.setDescription(null);
                 barChart.setData(data);
                 barChart.invalidate();
             }
@@ -618,9 +628,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    private void setSupportActionBar(Toolbar toolbar) {
-    }
 
     private void initBottomNavView()
     {
@@ -664,8 +671,44 @@ public class MainActivity extends AppCompatActivity {
         txtWelcome = (TextView)findViewById(R.id.txtWelcome);
         barChart = (BarChart)findViewById(R.id.profitChart);
         lineChart = (LineChart)findViewById(R.id.lineChart);
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolBar);
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottomNavView);
         fbAddTransaction = (FloatingActionButton)findViewById(R.id.fbAddTransaction);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity_toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.menu_mywallet:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .setTitle("Wallet")
+                        .setMessage("Developed by D.Kijowski - Zielona Góra")
+                        .setPositiveButton("Invite friends", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String message = "Hey, it's a message for you";
+
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.putExtra(Intent.EXTRA_TEXT, "");
+                                intent.setType("text/plain");
+                                Intent chooserIntent = Intent.createChooser(intent, "Send Message via:");
+                                startActivity(chooserIntent);
+                            }
+                        });
+                builder.show();
+                break;
+
+            default:
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,21 +1,27 @@
 package com.example.mybank.Dialogs;
 
 import android.app.AlertDialog;
+
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.mybank.Models.ShoppingActivity;
 import com.example.mybank.R;
+
 
 public class AddTransactionDialog extends DialogFragment {
 
     private static final String TAG = "AddTransactionDialog";
+
 
     private RelativeLayout shopping, investment, loan, transaction;
     @NonNull
@@ -31,7 +37,8 @@ public class AddTransactionDialog extends DialogFragment {
         shopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(), ShoppingActivity.class);
+                startActivity(intent);
             }
         });
         investment.setOnClickListener(new View.OnClickListener() {
