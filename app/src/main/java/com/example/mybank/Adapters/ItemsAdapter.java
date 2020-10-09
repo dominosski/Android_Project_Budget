@@ -2,6 +2,7 @@ package com.example.mybank.Adapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,6 +96,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         public ViewHolder(@NonNull View itemView)
         {
             super(itemView);
+
+            image = (ImageView)itemView.findViewById(R.id.itemImg);
+            name = (TextView)itemView.findViewById(R.id.itemName);
+            parent = (CardView)itemView.findViewById(R.id.parent);
         }
     }
 }

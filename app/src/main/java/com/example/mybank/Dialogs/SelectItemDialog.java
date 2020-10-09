@@ -92,7 +92,7 @@ public class SelectItemDialog extends DialogFragment implements ItemsAdapter.Get
         {
             if(!getAllItems.isCancelled())
             {
-                getAllItems.cancel(true)
+                getAllItems.cancel(true);
             }
         }
     }

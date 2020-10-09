@@ -129,6 +129,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("name", "bike");
         values.put("description", "The perfect bike for you!");
+        values.put("image_url", "https://images.internetstores.de/products//1089728/02/294799/NS_Bikes_Movement_1_26__black_splash[1920x1920].jpg?forceSize=false&forceAspectRatio=true&useTrim=true#xd_co_f=ZTY5ZjQwYTgtYzk2ZS00MGRmLWI4NzEtZDM0MGQxMzU3NDIz~");
         db.insert("items", null, values);
     }
 
