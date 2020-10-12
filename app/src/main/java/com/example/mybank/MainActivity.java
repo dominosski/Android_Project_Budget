@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.WorkManager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -106,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
         initTransactionRecView();
         initLineChart();
         initBarChart();
+
+        Log.d(TAG, "onCreate: work " + WorkManager.getInstance(this).getWorkInfosByTag("profit"));
 
     }
 
@@ -306,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 SQLiteDatabase db = databaseHelper.getReadableDatabase();
                 Cursor cursor = db.query("transactions", null, "user_id=?",
-                        new String[] {String.valueOf(integers[0])}, null, null, "date");
+                        new String[] {String.valueOf(integers[0])}, null, null, "date DESC");
                 if(null != cursor)
                 {
                     if(cursor.moveToFirst())
@@ -513,9 +516,11 @@ public class MainActivity extends AppCompatActivity {
                 Cursor cursor = db.query("shopping", new String[] {"date", "price"}, "user_id=?",
                         new String[] {String.valueOf(integers[0])}, null, null, null);
 
-                if(null != cursor)
+
+                if(null != cursor && cursor.getCount()>0)
                 {
-                    if(cursor.moveToFirst())
+
+                    if(cursor.moveToNext())
                     {
                         ArrayList<Shopping> shoppings = new ArrayList<>();
                         for (int i = 0; i < cursor.getCount() ; i++) {

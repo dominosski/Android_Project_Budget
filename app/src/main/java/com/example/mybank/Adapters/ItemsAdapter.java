@@ -57,10 +57,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: started");
         holder.name.setText(items.get(position).getName());
-        Glide.with(context)
+        /*Glide.with(context)
                 .asBitmap()
                 .load(items.get(position).getImage_url())
-                .into(holder.image);
+                .into(holder.image);*/
 
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override

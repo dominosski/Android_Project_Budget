@@ -170,7 +170,7 @@ public class ShoppingActivity extends AppCompatActivity implements ItemsAdapter.
                 transactionValue.put("amount", price);
                 transactionValue.put("description", description);
                 transactionValue.put("user_id", loggedInUser.get_id());
-                transactionValue.put("type", "shopping");
+                transactionValue.put("type", "shoping");
                 transactionValue.put("date", date);
                 transactionValue.put("recipient", store);
                 long id = db.insert("transactions", null, transactionValue);
@@ -185,7 +185,7 @@ public class ShoppingActivity extends AppCompatActivity implements ItemsAdapter.
                 long shoppingId = db.insert("shopping", null, shoppingValues);
                 Log.d(TAG, "doInBackground: shopping id: " + shoppingId);
 
-                Cursor cursor = db.query("users", new String[] {"remained_amout"}, "_id=?",
+                Cursor cursor = db.query("users", new String[] {"remained_amount"}, "_id=?",
                         new String[]{String.valueOf(loggedInUser.get_id())}, null,null,null);
 
                 if(null != cursor)

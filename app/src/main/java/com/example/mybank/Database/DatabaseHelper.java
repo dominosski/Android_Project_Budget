@@ -56,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    private void addTestShopping(SQLiteDatabase dataBase) {
+    private void addTestShopping(SQLiteDatabase db) {
         Log.d(TAG, "addTestShopping: started");
         ContentValues firstValues = new ContentValues();
         firstValues.put("item_id", 1);
@@ -65,7 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         firstValues.put("price", 10.0);
         firstValues.put("description", "First of all");
         firstValues.put("date", "2020-05-02");
-        dataBase.insert("shopping", null, firstValues);
+        db.insert("shopping", null, firstValues);
 
         ContentValues secondValues = new ContentValues();
         secondValues.put("item_id", 2);
@@ -74,16 +74,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         secondValues.put("price", 15.0);
         secondValues.put("description", "Second of all");
         secondValues.put("date", "2020-05-02");
-        dataBase.insert("shopping", null, secondValues);
+        db.insert("shopping", null, secondValues);
 
         ContentValues thirdValues = new ContentValues();
-        thirdValues.put("item_id",2);
+        thirdValues.put("item_id",3);
         thirdValues.put("transaction_id", 3);
         thirdValues.put("user_id", 0);
         thirdValues.put("price", 16.0);
         thirdValues.put("description", "Third one");
         thirdValues.put("date", "2020-05-03");
-        dataBase.insert("shopping", null, thirdValues);
+        db.insert("shopping", null, thirdValues);
     }
 
     private void addTestProfit(SQLiteDatabase db) {
