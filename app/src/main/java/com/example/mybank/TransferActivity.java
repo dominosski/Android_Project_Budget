@@ -45,6 +45,7 @@ public class TransferActivity extends AppCompatActivity {
 
     private AddTransaction addTransaction;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,13 +68,10 @@ public class TransferActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validateData())
-                {
+                if (validateData()) {
                     txtWarning.setVisibility(View.GONE);
                     initAdding();
-                }
-                else
-                {
+                } else {
                     txtWarning.setVisibility(View.VISIBLE);
                     txtWarning.setText("Please fill all of the empty spaces");
                 }
@@ -81,14 +79,12 @@ public class TransferActivity extends AppCompatActivity {
         });
     }
 
-    private void initAdding()
-    {
+    private void initAdding() {
         Log.d(TAG, "initAdding: started");
         Utils utils = new Utils(this);
         User user = utils.isUserLoggedIn();
 
-        if(null != user)
-        {
+        if (null != user) {
             addTransaction = new AddTransaction();
             addTransaction.execute(user.get_id());
         }
@@ -98,17 +94,14 @@ public class TransferActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if(null!= addTransaction)
-        {
-            if(!addTransaction.isCancelled())
-            {
+        if (null != addTransaction) {
+            if (!addTransaction.isCancelled()) {
                 addTransaction.cancel(true);
             }
         }
     }
 
-    private class AddTransaction extends AsyncTask<Integer, Void, Void>
-    {
+    private class AddTransaction extends AsyncTask<Integer, Void, Void> {
         private double amount;
         private String recipient, date, description, type;
 
@@ -122,24 +115,20 @@ public class TransferActivity extends AppCompatActivity {
             this.recipient = edtTxtRecipient.getText().toString();
             this.date = edtTxtDate.getText().toString();
             this.description = edtTxtDesription.getText().toString();
-            rgType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    switch (checkedId)
-                    {
-                        case R.id.btnReceive:
-                            type = "receive";
-                            break;
-                        case R.id.btnSend:
-                            type = "send";
-                            amount = -amount;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            });
 
+            int rbId = rgType.getCheckedRadioButtonId();
+
+            switch (rbId) {
+                case R.id.btnReceive:
+                    type = "receive";
+                    break;
+                case R.id.btnSend:
+                    type = "send";
+                    amount = -amount;
+                    break;
+                default:
+                    break;
+            }
             databaseHelper = new DatabaseHelper(TransferActivity.this);
         }
 
@@ -157,37 +146,28 @@ public class TransferActivity extends AppCompatActivity {
 
                 long id = db.insert("transactions", null, values);
                 Log.d(TAG, "doInBackground: new Transaction id: " + id);
-                if(id != -1)
-                {
-                    Cursor cursor = db.query("users", new String[] {"remained_amount"}, "_id=?",
-                            new String[] {String.valueOf(integers[0])}, null, null, null);
-                    if(null != cursor)
-                    {
-                        if(cursor.moveToFirst())
-                        {
+                if (id != -1) {
+                    Cursor cursor = db.query("users", new String[]{"remained_amount"}, "_id=?",
+                            new String[]{String.valueOf(integers[0])}, null, null, null);
+                    if (null != cursor) {
+                        if (cursor.moveToFirst()) {
                             double currentRemainedAmount = cursor.getDouble(cursor.getColumnIndex("remained_amount"));
                             cursor.close();
                             ContentValues newValues = new ContentValues();
                             newValues.put("remained_amount", currentRemainedAmount + amount);
-                            int affectedRows = db.update("users", newValues, "_id=?", new String[] {String.valueOf(integers[0])});
+                            int affectedRows = db.update("users", newValues, "_id=?", new String[]{String.valueOf(integers[0])});
                             Log.d(TAG, "doInBackground: updatedRows: " + affectedRows);
-                        }
-                        else
-                        {
+                        } else {
                             cursor.close();
                             db.close();
                         }
-                    }
-                    else {
+                    } else {
                         db.close();
                     }
-                }
-                else {
+                } else {
                     db.close();
                 }
-            }
-            catch (SQLException x)
-            {
+            } catch (SQLException x) {
                 x.printStackTrace();
             }
             return null;
@@ -201,21 +181,18 @@ public class TransferActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
+
     }
 
-    private boolean validateData()
-    {
+    private boolean validateData() {
         Log.d(TAG, "validateData: started");
-        if(edtTxtAmount.getText().toString().equals(""))
-        {
+        if (edtTxtAmount.getText().toString().equals("")) {
             return false;
         }
-        if(edtTxtRecipient.getText().toString().equals(""))
-        {
+        if (edtTxtRecipient.getText().toString().equals("")) {
             return false;
         }
-        if(edtTxtDate.getText().toString().equals(""))
-        {
+        if (edtTxtDate.getText().toString().equals("")) {
             return false;
         }
 
@@ -225,16 +202,16 @@ public class TransferActivity extends AppCompatActivity {
     private void initViews() {
         Log.d(TAG, "initViews: started");
 
-        edtTxtAmount = (EditText)findViewById(R.id.edtTxtAmount);
-        edtTxtDate = (EditText)findViewById(R.id.edtTxtDate);
-        edtTxtDesription = (EditText)findViewById(R.id.edtTxtDescription);
-        edtTxtRecipient = (EditText)findViewById(R.id.edtTxtRecipient);
+        edtTxtAmount = (EditText) findViewById(R.id.edtTxtAmount);
+        edtTxtDate = (EditText) findViewById(R.id.edtTxtDate);
+        edtTxtDesription = (EditText) findViewById(R.id.edtTxtDescription);
+        edtTxtRecipient = (EditText) findViewById(R.id.edtTxtRecipient);
 
-        btnAdd = (Button)findViewById(R.id.btnAdd);
-        btnPickDate = (Button)findViewById(R.id.btnPickDate);
+        btnAdd = (Button) findViewById(R.id.btnAdd);
+        btnPickDate = (Button) findViewById(R.id.btnPickDate);
 
-        rgType = (RadioGroup)findViewById(R.id.rgType);
+        rgType = (RadioGroup) findViewById(R.id.rgType);
 
-        txtWarning = (TextView)findViewById(R.id.txtWarning);
+        txtWarning = (TextView) findViewById(R.id.txtWarning);
     }
 }

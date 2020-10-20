@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TransferActivity"></activity>
+        <activity android:name=".AddLoanActivity"></activity>
+        <activity android:name=".TransferActivity" />
         <activity android:name=".InvestmentActivity" />
         <activity android:name=".AddInvestmentActivity" />
         <activity android:name=".Models.ShoppingActivity" />

@@ -155,7 +155,7 @@ public class ShoppingActivity extends AppCompatActivity implements ItemsAdapter.
             Utils utils = new Utils(ShoppingActivity.this);
             loggedInUser = utils.isUserLoggedIn();
             this.date = edtTxtDate.getText().toString();
-            this.price = Double.valueOf(edtTxtItemPrice.getText().toString());
+            this.price = -Double.valueOf(edtTxtItemPrice.getText().toString());
             this.store = edtTxtStore.getText().toString();
             this.description = edtTxtDesc.getText().toString();
 

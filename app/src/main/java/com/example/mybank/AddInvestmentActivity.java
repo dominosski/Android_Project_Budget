@@ -145,7 +145,7 @@ public class AddInvestmentActivity extends AppCompatActivity {
 
             this.date = edtTxtInitDate.getText().toString();
             this.name = edtTxtName.getText().toString();
-            this.amount = Double.valueOf(edtTxtInitAmount.getText().toString());
+            this.amount = -Double.valueOf(edtTxtInitAmount.getText().toString());
         }
 
         @Override
