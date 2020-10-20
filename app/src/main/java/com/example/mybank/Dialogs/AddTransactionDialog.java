@@ -17,6 +17,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.mybank.AddInvestmentActivity;
 import com.example.mybank.Models.ShoppingActivity;
 import com.example.mybank.R;
+import com.example.mybank.TransferActivity;
 
 
 public class AddTransactionDialog extends DialogFragment {
@@ -58,7 +59,8 @@ public class AddTransactionDialog extends DialogFragment {
         transaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(), TransferActivity.class);
+                startActivity(intent);
             }
         });
 

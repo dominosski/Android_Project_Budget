@@ -13,13 +13,13 @@
         android:id="@+id/menu_item_home"
         android:icon="@drawable/ic_home"/>
     <item
-        android:title="Investment"
-        android:id="@+id/menu_item_investment"
-        android:icon="@drawable/ic_investment"/>
-    <item
         android:title="Loans"
         android:id="@+id/menu_item_loans"
         android:icon="@drawable/ic_loan"/>
+    <item
+        android:title="Investment"
+        android:id="@+id/menu_item_investment"
+        android:icon="@drawable/ic_investment"/>
 
 
 </menu>

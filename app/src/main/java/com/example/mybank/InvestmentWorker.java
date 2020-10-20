@@ -71,6 +71,10 @@ public class InvestmentWorker extends Worker {
                         int affectedRows = db.update("users", newValues, "_id=?", new String[] {String.valueOf(user_id)});
                         Log.d(TAG, "doInBackground: updatedRows: " + affectedRows);
                     }
+                    else
+                    {
+                        cursor.close();
+                    }
                 }
             }
             db.close();

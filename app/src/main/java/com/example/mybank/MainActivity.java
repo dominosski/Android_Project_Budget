@@ -648,7 +648,9 @@ public class MainActivity extends AppCompatActivity {
                     //TODO
                     break;
                     case R.id.menu_item_investment:
-
+                        Intent intent = new Intent(MainActivity.this, InvestmentActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                         break;
                     case R.id.menu_item_loans:
 
