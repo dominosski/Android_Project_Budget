@@ -34,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "monthly_roi DOUBLE, name TEXT, init_date DATE, finish_date DATE, user_id INTEGER, transaction_id INTEGER)";
 
         String createLoansTable = "CREATE TABLE loans (_id INTEGER PRIMARY KEY AUTOINCREMENT, init_date DATE, finish_date DATE," +
-                "init_amount DOUBLE, remained_amount DOUBLE, monthly_payment DOUBLE, monthly_roi DOUBLE, name TEXT, user_id INTEGER)";
+                "init_amount DOUBLE, remained_amount DOUBLE, monthly_payment DOUBLE, monthly_roi DOUBLE, name TEXT, user_id INTEGER, transaction_id INTEGER)";
 
         String createTransactionTable = "CREATE TABLE transactions (_id INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE, date DATE," +
                 "type TEXT, user_id INTEGER, recipient TEXT, description TEXT)";

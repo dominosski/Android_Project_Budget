@@ -1,9 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddLoanActivity">
+    tools:context=".AddLoanActivity"
+    android:padding="5dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp">
+
+            <TextView
+                android:id="@+id/txtAddLoan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Add Loan"
+                android:textStyle="bold"
+                android:textSize="20dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/nameLinLayout"
+                android:padding="5dp"
+                android:layout_below="@+id/txtAddLoan">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:id="@+id/txtName"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="loan name"
+                    android:id="@+id/edtTxtLoanName"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/amountLinLayout"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:layout_below="@+id/nameLinLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Initial Amount"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="initial amount"
+                    android:id="@+id/edtTxtInitAmount"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/roiLinLayout"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:layout_below="@+id/amountLinLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Monthly ROI"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edtTxtMonthlyROI"
+                    android:hint="monthly ROI"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/monthlyPaymentLinLayout"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:layout_below="@+id/roiLinLayout">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Monthly Payment"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edtTxtMonthlyPayment"
+                    android:hint="monthly payment"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtDate"
+                android:layout_below="@+id/monthlyPaymentLinLayout"
+                android:text="Initial Date"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtDate"
+                android:padding="10dp"
+                android:id="@+id/dateRelLayout">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Initial Date"
+                    android:layout_toLeftOf="@+id/btnPickInitDate"
+                    android:id="@+id/edtTxtInitDate"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/btnPickInitDate"
+                    android:layout_marginLeft="10dp"
+                    android:text="pick date"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtFinishDate"
+                android:layout_below="@+id/dateRelLayout"
+                android:text="Finish Date"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/finishDateRelLayout"
+                android:layout_below="@+id/txtFinishDate"
+                android:padding="10dp">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edtTxtFinishDate"
+                    android:layout_toLeftOf="@+id/btnPickFinishDate"
+                    android:hint="finish date"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="pick date"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/btnPickFinishDate"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/finishDateRelLayout"
+                android:id="@+id/addLoanRelLayout"
+                android:layout_marginTop="5dp">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/btnAddLoan"
+                    android:text="Add loan"/>
+
+                <TextView
+                    android:id="@+id/txtWarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btnAddLoan"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:text="Warning"
+                    android:textColor="@color/colorAccent"
+                    android:visibility="gone"/>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>
