@@ -25,7 +25,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtInvestmentName"
+                android:id="@+id/txtLoanName"
                 android:text=" loan name"/>
         </LinearLayout>
 
@@ -114,7 +114,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtRemainedAmount"
+                android:id="@+id/txtRemAmount"
                 android:text=" remained amount"/>
         </LinearLayout>
 
@@ -130,10 +130,10 @@
                 android:layout_height="wrap_content"
                 android:text="Total expected loss: "/>
             <TextView
-                android:id="@+id/txtTotal"
+                android:id="@+id/txtLoss"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="profit amount"/>
+                android:text="total loss"/>
         </LinearLayout>
 
         <LinearLayout

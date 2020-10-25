@@ -52,8 +52,9 @@ public class LoanAdapter extends RecyclerView.Adapter<LoanAdapter.ViewHolder>{
         holder.finishDate.setText(loans.get(position).getFinish_date());
         holder.amount.setText(String.valueOf(loans.get(position).getInit_amount()));
         holder.roi.setText(String.valueOf(loans.get(position).getMonthly_roi()));
-        holder.name.setText(String.valueOf(loans.get(position).getRemained_amount()));
-        holder.name.setText(String.valueOf(getTotalLoss(loans.get(position))));
+        holder.remained_amount.setText(String.valueOf(loans.get(position).getRemained_amount()));
+        holder.loss.setText(String.valueOf(getTotalLoss(loans.get(position))));
+        holder.monthly_payment.setText(String.valueOf(loans.get(position).getMonthly_payment()));
 
         if(number == -1)
         {
@@ -89,7 +90,7 @@ public class LoanAdapter extends RecyclerView.Adapter<LoanAdapter.ViewHolder>{
             int months = finishMonth - initMonth;
 
             for (int i = 0; i < months ; i++) {
-                loss+= loan.getMonthly_payment() * loan.getMonthly_roi()/100;
+                loss+= loan.getInit_amount() * loan.getMonthly_roi()/100;
 
             }
         } catch (ParseException e) {
@@ -112,19 +113,20 @@ public class LoanAdapter extends RecyclerView.Adapter<LoanAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        private TextView name, initDate, finishDate, roi, loss, amount, remained_amount;
+        private TextView name, initDate, finishDate, roi, loss, amount, remained_amount, monthly_payment;
         private CardView parent;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            name = (TextView)itemView.findViewById(R.id.txtLoan);
+            name = (TextView)itemView.findViewById(R.id.txtLoanName);
             initDate = (TextView)itemView.findViewById(R.id.txtInitDate);
             finishDate = (TextView)itemView.findViewById(R.id.txtFinishDate);
             roi = (TextView)itemView.findViewById(R.id.txtROI);
-            loss = (TextView)itemView.findViewById(R.id.txtMonthlyPayment);
+            loss = (TextView)itemView.findViewById(R.id.txtLoss);
             amount = (TextView) itemView.findViewById(R.id.txtAmount);
-            remained_amount = (TextView)itemView.findViewById(R.id.txtRemainedAmount);
+            remained_amount = (TextView)itemView.findViewById(R.id.txtRemAmount);
+            monthly_payment = (TextView)itemView.findViewById(R.id.txtMonthlyPayment);
 
             parent = (CardView)itemView.findViewById(R.id.parent);
         }

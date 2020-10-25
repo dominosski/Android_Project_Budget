@@ -654,7 +654,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.menu_item_loans:
-
+                        Intent loanIntent = new Intent(MainActivity.this, LoanActivity.class);
+                        loanIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(loanIntent);
                         break;
                     case R.id.menu_item_transaction:
 
