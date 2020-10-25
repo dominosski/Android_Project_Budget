@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         initBarChart();
 
         Log.d(TAG, "onCreate: work " + WorkManager.getInstance(this).getWorkInfosByTag("profit"));
+        Log.d(TAG, "onCreate: loan" + WorkManager.getInstance(this).getWorkInfosByTag("loan_payment"));
 
     }
 

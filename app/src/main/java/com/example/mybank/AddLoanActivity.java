@@ -1,9 +1,14 @@
 package com.example.mybank;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,6 +28,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class AddLoanActivity extends AppCompatActivity {
     private static final String TAG = "AddLoanActivity";
@@ -57,6 +63,9 @@ public class AddLoanActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
 
+    private AddTransaction addTransaction;
+    private AddLoan addLoan;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +75,29 @@ public class AddLoanActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
         utils = new Utils(this);
-        
+
         setOnClickListeners();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(null != addTransaction)
+        {
+            if(!addTransaction.isCancelled())
+            {
+                addTransaction.cancel(true);
+            }
+        }
+
+        if(null != addLoan)
+        {
+            if(!addLoan.isCancelled())
+            {
+                addLoan.cancel(true);
+            }
+        }
     }
 
     private void setOnClickListeners() {
@@ -92,13 +122,10 @@ public class AddLoanActivity extends AppCompatActivity {
         btnAddLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validateData())
-                {
+                if (validateData()) {
                     txtWarning.setVisibility(View.GONE);
                     initAdding();
-                }
-                else
-                {
+                } else {
                     txtWarning.setVisibility(View.VISIBLE);
                     txtWarning.setText("Please fill all the blank spaces");
                 }
@@ -110,15 +137,14 @@ public class AddLoanActivity extends AppCompatActivity {
         Log.d(TAG, "initAdding: started");
 
         User user = utils.isUserLoggedIn();
-        if(null != user)
-        {
-            //TODO
+        if (null != user) {
+            addTransaction = new AddTransaction();
+            addTransaction.execute(user.get_id());
         }
 
     }
 
-    private class AddTransaction extends AsyncTask<Integer, Void, Integer>
-    {
+    private class AddTransaction extends AsyncTask<Integer, Void, Integer> {
         private double amount;
         private String date, name;
 
@@ -140,15 +166,13 @@ public class AddLoanActivity extends AppCompatActivity {
                 values.put("recipient", name);
                 values.put("date", date);
                 values.put("user_id", integers[0]);
-                values.put("description", "Received amount for " + name + "Loan");
+                values.put("description", "Received amount for " + name + " loan");
                 values.put("type", "loan");
 
                 long transactionId = db.insert("transactions", null, values);
                 db.close();
-                return (int)transactionId;
-            }
-            catch (SQLException x)
-            {
+                return (int) transactionId;
+            } catch (SQLException x) {
                 x.printStackTrace();
                 return null;
             }
@@ -158,15 +182,14 @@ public class AddLoanActivity extends AppCompatActivity {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
 
-            if(null != integer)
-            {
-                //TODO
+            if (null != integer) {
+                addLoan = new AddLoan();
+                addLoan.execute(integer);
             }
         }
     }
 
-    private class AddLoan extends AsyncTask<Integer, Void, Integer>
-    {
+    private class AddLoan extends AsyncTask<Integer, Void, Integer> {
 
         private int userId;
         private String name, initDate, finishDate;
@@ -184,12 +207,9 @@ public class AddLoanActivity extends AppCompatActivity {
             this.monthlyPayment = Double.valueOf(edtTxtMonthlyPayment.getText().toString());
 
             User user = utils.isUserLoggedIn();
-            if(null != user)
-            {
+            if (null != user) {
                 this.userId = user.get_id();
-            }
-            else
-            {
+            } else {
                 this.userId = -1;
             }
         }
@@ -197,8 +217,7 @@ public class AddLoanActivity extends AppCompatActivity {
         @Override
         protected Integer doInBackground(Integer... integers) {
 
-            if(userId != -1)
-            {
+            if (userId != -1) {
                 try {
                     SQLiteDatabase db = databaseHelper.getWritableDatabase();
                     ContentValues values = new ContentValues();
@@ -214,49 +233,36 @@ public class AddLoanActivity extends AppCompatActivity {
 
                     long loanId = db.insert("loans", null, values);
 
-                    if(loanId != -1)
-                    {
+                    if (loanId != -1) {
                         Cursor cursor = db.query("users", new String[]{"remained_amount"}, "_id=?",
-                                new String[] {String.valueOf(userId)}, null, null, null);
-                        if(null != cursor)
-                        {
-                            if(cursor.moveToFirst())
-                            {
+                                new String[]{String.valueOf(userId)}, null, null, null);
+                        if (null != cursor) {
+                            if (cursor.moveToFirst()) {
                                 double currentRemainedAmount = cursor.getDouble(cursor.getColumnIndex("remained_amount"));
                                 ContentValues newValues = new ContentValues();
                                 newValues.put("remained_amount", currentRemainedAmount);
-                                db.update("users", newValues, "_id=?", new String[] {String.valueOf(userId)});
+                                db.update("users", newValues, "_id=?", new String[]{String.valueOf(userId)});
                                 cursor.close();
                                 db.close();
                                 return (int) loanId;
-                            }
-                            else
-                            {
+                            } else {
                                 cursor.close();
                                 db.close();
                                 return null;
                             }
-                        }
-                        else
-                        {
+                        } else {
                             db.close();
                             return null;
                         }
-                    }
-                    else
-                    {
+                    } else {
                         db.close();
                         return null;
                     }
-                }
-                catch (SQLException x)
-                {
+                } catch (SQLException x) {
                     x.printStackTrace();
                     return null;
                 }
-            }
-            else
-            {
+            } else {
                 return null;
             }
         }
@@ -265,8 +271,7 @@ public class AddLoanActivity extends AppCompatActivity {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
 
-            if(null != integer)
-            {
+            if (null != integer) {
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 try {
@@ -280,39 +285,58 @@ public class AddLoanActivity extends AppCompatActivity {
 
                     int months = finishMonth - initMonth;
 
-                }catch (ParseException x)
-                {
+                    int days = 0;
+                    for (int i = 0; i < months; i++) {
+                        days += 30;
+
+                        Data data = new Data.Builder()
+                                .putInt("loan_id", integer)
+                                .putInt("user_id", userId)
+                                .putDouble("monthly_payment", monthlyPayment)
+                                .putString("name", name)
+                                .build();
+
+                        Constraints constraints = new Constraints.Builder()
+                                .setRequiresBatteryNotLow(true)
+                                .build();
+
+                        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(LoanWorker.class)
+                                .setInputData(data)
+                                .setConstraints(constraints)
+                                .setInitialDelay(days, TimeUnit.DAYS)
+                                .addTag("loan_payment")
+                                .build();
+                        WorkManager.getInstance(AddLoanActivity.this).enqueue(request);
+                        Intent intent = new Intent(AddLoanActivity.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
+
+                } catch (ParseException x) {
                     x.printStackTrace();
                 }
             }
         }
     }
 
-    private boolean validateData()
-    {
+    private boolean validateData() {
         Log.d(TAG, "validateData: started");
-        if(edtTxtName.getText().toString().equals(""))
-        {
+        if (edtTxtName.getText().toString().equals("")) {
             return false;
         }
-        if(edtTxtInitDate.getText().toString().equals(""))
-        {
+        if (edtTxtInitDate.getText().toString().equals("")) {
             return false;
         }
-        if(edtTxtFinishDate.getText().toString().equals(""))
-        {
+        if (edtTxtFinishDate.getText().toString().equals("")) {
             return false;
         }
-        if(edtTxtROI.getText().toString().equals(""))
-        {
+        if (edtTxtROI.getText().toString().equals("")) {
             return false;
         }
-        if(edtTxtInitAmount.getText().toString().equals(""))
-        {
+        if (edtTxtInitAmount.getText().toString().equals("")) {
             return false;
         }
-        if(edtTxtMonthlyPayment.getText().toString().equals(""))
-        {
+        if (edtTxtMonthlyPayment.getText().toString().equals("")) {
             return false;
         }
 
@@ -320,21 +344,20 @@ public class AddLoanActivity extends AppCompatActivity {
     }
 
 
-
     private void initViews() {
         Log.d(TAG, "initViews: started");
 
-        edtTxtName = (EditText)findViewById(R.id.edtTxtName);
-        edtTxtROI = (EditText)findViewById(R.id.edtTxtMonthlyROI);
-        edtTxtFinishDate = (EditText)findViewById(R.id.edtTxtFinishDate);
-        edtTxtInitDate = (EditText)findViewById(R.id.edtTxtInitDate);
-        edtTxtInitAmount = (EditText)findViewById(R.id.edtTxtInitAmount);
-        edtTxtMonthlyPayment = (EditText)findViewById(R.id.edtTxtMonthlyPayment);
+        edtTxtName = (EditText) findViewById(R.id.edtTxtLoanName);
+        edtTxtROI = (EditText) findViewById(R.id.edtTxtMonthlyROI);
+        edtTxtFinishDate = (EditText) findViewById(R.id.edtTxtFinishDate);
+        edtTxtInitDate = (EditText) findViewById(R.id.edtTxtInitDate);
+        edtTxtInitAmount = (EditText) findViewById(R.id.edtTxtInitAmount);
+        edtTxtMonthlyPayment = (EditText) findViewById(R.id.edtTxtMonthlyPayment);
 
-        btnPickInitDate = (Button)findViewById(R.id.btnPickInitDate);
-        btnPickFinishDate = (Button)findViewById(R.id.btnPickFinishDate);
-        btnAddLoan = (Button)findViewById(R.id.btnAddLoan);
+        btnPickInitDate = (Button) findViewById(R.id.btnPickInitDate);
+        btnPickFinishDate = (Button) findViewById(R.id.btnPickFinishDate);
+        btnAddLoan = (Button) findViewById(R.id.btnAddLoan);
 
-        txtWarning = (TextView)findViewById(R.id.txtWarning);
+        txtWarning = (TextView) findViewById(R.id.txtWarning);
     }
 }
