@@ -156,10 +156,12 @@ public class LoanActivity extends AppCompatActivity {
                 switch (item.getItemId())
                 {
                     case R.id.menu_item_stats:
-                        //TODO
+                        Intent statsIntent = new Intent(LoanActivity.this, StatsActivity.class);
+                        statsIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(statsIntent);
                         break;
                     case R.id.menu_item_investment:
-                        Intent investmentIntent = new Intent(LoanActivity.this, MainActivity.class);
+                        Intent investmentIntent = new Intent(LoanActivity.this, InvestmentActivity.class);
                         investmentIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(investmentIntent);
                         break;
@@ -167,10 +169,14 @@ public class LoanActivity extends AppCompatActivity {
 
                         break;
                     case R.id.menu_item_transaction:
-
+                        Intent transactionIntent = new Intent(LoanActivity.this, TransactionActivity.class);
+                        transactionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(transactionIntent);
                         break;
                     case R.id.menu_item_home:
-
+                        Intent homeIntent = new Intent(LoanActivity.this, MainActivity.class);
+                        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(homeIntent);
                         break;
                 }
 

@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoanActivity"></activity>
+        <activity android:name=".StatsActivity"></activity>
+        <activity
+            android:name=".TransactionActivity"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity android:name=".LoanActivity" />
         <activity android:name=".AddLoanActivity" />
         <activity android:name=".TransferActivity" />
         <activity android:name=".InvestmentActivity" />
@@ -19,7 +23,7 @@
         <activity android:name=".Authentication.RegisterActivity" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -615,12 +615,12 @@ public class MainActivity extends AppCompatActivity {
                 BarDataSet dataSet = new BarDataSet(entries, "Shopping chart");
                 dataSet.setColor(Color.RED);
                 BarData data = new BarData(dataSet);
+
                 barChart.getAxisRight().setEnabled(false);
                 XAxis xAxis = barChart.getXAxis();
                 xAxis.setAxisMaximum(31);
                 xAxis.setEnabled(false);
                 YAxis yAxis = barChart.getAxisLeft();
-                yAxis.setAxisMaximum(50);
                 yAxis.setAxisMinimum(10);
                 yAxis.setDrawGridLines(false);
                 barChart.setDescription(null);
@@ -646,7 +646,9 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId())
                 {
                     case R.id.menu_item_stats:
-                    //TODO
+                        Intent statsIntent = new Intent(MainActivity.this, StatsActivity.class);
+                        statsIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(statsIntent);
                     break;
                     case R.id.menu_item_investment:
                         Intent intent = new Intent(MainActivity.this, InvestmentActivity.class);
@@ -659,7 +661,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(loanIntent);
                         break;
                     case R.id.menu_item_transaction:
-
+                        Intent transactionIntent = new Intent(MainActivity.this, TransactionActivity.class);
+                        transactionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(transactionIntent);
                         break;
                     case R.id.menu_item_home:
 
@@ -679,7 +683,7 @@ public class MainActivity extends AppCompatActivity {
         transactionRecView = (RecyclerView)findViewById(R.id.transactionRecView);
         txtAmount = (TextView)findViewById(R.id.txtAmount);
         txtWelcome = (TextView)findViewById(R.id.txtWelcome);
-        barChart = (BarChart)findViewById(R.id.profitChart);
+        barChart = (BarChart)findViewById(R.id.barChart);
         lineChart = (LineChart)findViewById(R.id.lineChart);
         toolbar = (Toolbar) findViewById(R.id.toolBar);
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottomNavView);
