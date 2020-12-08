@@ -2,7 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="MyWallet"
+        android:title="Options"
         android:id="@+id/menu_mywallet"
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        android:icon="@mipmap/ic_options"
+
+        />
 </menu>

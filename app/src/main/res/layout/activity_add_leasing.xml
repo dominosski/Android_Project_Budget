@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddLoanActivity"
+    tools:context=".AddLeasingActivity"
     android:padding="5dp">
 
     <androidx.core.widget.NestedScrollView
@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="Add Loan"
+                android:text="Add Leasing"
                 android:textStyle="bold"
                 android:textSize="20dp"/>
             <LinearLayout
@@ -41,7 +41,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="loan name"
+                    android:hint="leasing name"
                     android:id="@+id/edtTxtLoanName"/>
             </LinearLayout>
 
@@ -126,7 +126,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Initial Date"
+                    android:hint="initial Date"
                     android:layout_toLeftOf="@+id/btnPickInitDate"
                     android:id="@+id/edtTxtInitDate"/>
                 <Button
@@ -180,7 +180,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:id="@+id/btnAddLoan"
-                    android:text="Add loan"/>
+                    android:text="Add leasing"/>
 
                 <TextView
                     android:id="@+id/txtWarning"

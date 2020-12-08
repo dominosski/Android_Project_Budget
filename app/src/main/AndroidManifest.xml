@@ -14,7 +14,7 @@
             android:name=".TransactionActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity android:name=".LoanActivity" />
-        <activity android:name=".AddLoanActivity" />
+        <activity android:name=".AddLeasingActivity" />
         <activity android:name=".TransferActivity" />
         <activity android:name=".InvestmentActivity" />
         <activity android:name=".AddInvestmentActivity" />

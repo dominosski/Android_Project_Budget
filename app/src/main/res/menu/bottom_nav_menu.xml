@@ -5,7 +5,7 @@
         android:id="@+id/menu_item_stats"
         android:icon="@drawable/ic_stats"/>
     <item
-        android:title="Transaction"
+        android:title="Transactions"
         android:id="@+id/menu_item_transaction"
         android:icon="@drawable/ic_transaction"/>
     <item
@@ -13,7 +13,7 @@
         android:id="@+id/menu_item_home"
         android:icon="@drawable/ic_home"/>
     <item
-        android:title="Loans"
+        android:title="Leasings"
         android:id="@+id/menu_item_loans"
         android:icon="@drawable/ic_loan"/>
     <item

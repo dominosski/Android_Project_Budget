@@ -290,8 +290,8 @@ public class StatsActivity extends AppCompatActivity {
                     totalRemainedAmount += l.getRemained_amount();
                 }
 
-                entries.add(new PieEntry((float)totalLoansAmount, "Total Loans"));
-                entries.add(new PieEntry((float) totalRemainedAmount, "Remained Loans"));
+                entries.add(new PieEntry((float)totalLoansAmount, "Total leasings"));
+                entries.add(new PieEntry((float) totalRemainedAmount, "Remained leasings"));
                 PieDataSet dataSet = new PieDataSet(entries, "");
                 dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
                 dataSet.setSliceSpace(5f);
@@ -338,7 +338,6 @@ public class StatsActivity extends AppCompatActivity {
                         startActivity(homeIntent);
                         break;
                 }
-
 
                 return false;
             }

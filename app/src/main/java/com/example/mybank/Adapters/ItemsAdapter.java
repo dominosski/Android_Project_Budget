@@ -96,8 +96,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         public ViewHolder(@NonNull View itemView)
         {
             super(itemView);
-
-            image = (ImageView)itemView.findViewById(R.id.itemImg);
             name = (TextView)itemView.findViewById(R.id.itemName);
             parent = (CardView)itemView.findViewById(R.id.parent);
         }

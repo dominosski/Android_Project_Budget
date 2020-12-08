@@ -120,7 +120,7 @@ public class TransferActivity extends AppCompatActivity {
 
             switch (rbId) {
                 case R.id.btnReceive:
-                    type = "receive";
+                    type = "profit";
                     break;
                 case R.id.btnSend:
                     type = "send";
@@ -143,6 +143,7 @@ public class TransferActivity extends AppCompatActivity {
                 values.put("date", date);
                 values.put("description", description);
                 values.put("user_id", integers[0]);
+                values.put("type", this.type);
 
                 long id = db.insert("transactions", null, values);
                 Log.d(TAG, "doInBackground: new Transaction id: " + id);
@@ -153,6 +154,7 @@ public class TransferActivity extends AppCompatActivity {
                         if (cursor.moveToFirst()) {
                             double currentRemainedAmount = cursor.getDouble(cursor.getColumnIndex("remained_amount"));
                             cursor.close();
+
                             ContentValues newValues = new ContentValues();
                             newValues.put("remained_amount", currentRemainedAmount + amount);
                             int affectedRows = db.update("users", newValues, "_id=?", new String[]{String.valueOf(integers[0])});

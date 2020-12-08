@@ -30,8 +30,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class AddLoanActivity extends AppCompatActivity {
-    private static final String TAG = "AddLoanActivity";
+public class AddLeasingActivity extends AppCompatActivity {
+    private static final String TAG = "AddLeasingActivity";
 
     private EditText edtTxtName, edtTxtInitAmount, edtTxtROI, edtTxtInitDate, edtTxtFinishDate, edtTxtMonthlyPayment;
     private Button btnPickInitDate, btnPickFinishDate, btnAddLoan;
@@ -69,7 +69,7 @@ public class AddLoanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_loan);
+        setContentView(R.layout.activity_add_leasing);
 
         initViews();
 
@@ -106,7 +106,7 @@ public class AddLoanActivity extends AppCompatActivity {
         btnPickInitDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(AddLoanActivity.this, initDateSetListener,
+                new DatePickerDialog(AddLeasingActivity.this, initDateSetListener,
                         initCalendar.get(Calendar.YEAR), initCalendar.get(Calendar.MONTH), initCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
@@ -114,7 +114,7 @@ public class AddLoanActivity extends AppCompatActivity {
         btnPickFinishDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(AddLoanActivity.this, finishDateSetListener,
+                new DatePickerDialog(AddLeasingActivity.this, finishDateSetListener,
                         finishCalendar.get(Calendar.YEAR), finishCalendar.get(Calendar.MONTH), finishCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
@@ -306,8 +306,8 @@ public class AddLoanActivity extends AppCompatActivity {
                                 .setInitialDelay(days, TimeUnit.DAYS)
                                 .addTag("loan_payment")
                                 .build();
-                        WorkManager.getInstance(AddLoanActivity.this).enqueue(request);
-                        Intent intent = new Intent(AddLoanActivity.this, MainActivity.class);
+                        WorkManager.getInstance(AddLeasingActivity.this).enqueue(request);
+                        Intent intent = new Intent(AddLeasingActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }

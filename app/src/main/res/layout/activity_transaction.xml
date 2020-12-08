@@ -18,7 +18,7 @@
                 android:id="@+id/txtFilters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="18dp"
                 android:text="Filters: "
                 android:textStyle="bold"/>
             <RelativeLayout
@@ -44,7 +44,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="Shoppings"/>
+                        android:text="Outgoings"/>
                     <RadioButton
                         android:id="@+id/rbInvestment"
                         android:layout_width="wrap_content"
@@ -56,31 +56,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="Profit"/>
+                        android:text="Profits"/>
                     <RadioButton
                         android:id="@+id/rbLoan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="Loans"/>
+                        android:text="Leasings"/>
                     <RadioButton
                         android:id="@+id/rbLoanPayment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="Loan Payments"/>
+                        android:text="Leasing Payments"/>
                     <RadioButton
                         android:id="@+id/rbSend"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="Send"/>
-                    <RadioButton
-                        android:id="@+id/rbReceive"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="Receive"/>
+                        android:text="Sent"/>
 
                 </RadioGroup>
 
@@ -95,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Show transactions greater tha: "/>
+                        android:text="Transactions greater than: "/>
                     <EditText
                         android:id="@+id/edtTxtMin"
                         android:layout_width="200dp"
@@ -152,5 +146,6 @@
         android:layout_alignParentBottom="true"
         app:itemIconTint="@color/bottom_nav_color"
         app:itemTextColor="@color/bottom_nav_color"
-        app:menu="@menu/bottom_nav_menu"/>
+        app:menu="@menu/bottom_nav_menu"
+        android:background="@drawable/background_toolbar"/>
 </RelativeLayout>

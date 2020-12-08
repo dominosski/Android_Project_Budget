@@ -61,6 +61,10 @@ public class TransactionActivity extends AppCompatActivity {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(edtTxtMin.getText().toString().isEmpty())
+                {
+                    edtTxtMin.setText("0.0");
+                }
                 initSearch();
             }
         });
@@ -105,9 +109,10 @@ public class TransactionActivity extends AppCompatActivity {
             super.onPreExecute();
 
             this.min = Double.valueOf(edtTxtMin.getText().toString());
+
             switch (rgType.getCheckedRadioButtonId()) {
                 case R.id.rbInvestment:
-                    type = "investment";
+                    type = "investments";
                     break;
                 case R.id.rbLoan:
                     type = "loan";
@@ -123,9 +128,6 @@ public class TransactionActivity extends AppCompatActivity {
                     break;
                 case R.id.rbSend:
                     type = "send";
-                    break;
-                case R.id.rbReceive:
-                    type = "receive";
                     break;
                 default:
                     type = "all";
@@ -170,13 +172,11 @@ public class TransactionActivity extends AppCompatActivity {
                                 absoluteAmount = -absoluteAmount;
                             }
 
-                            if(absoluteAmount > this.min)
+                            if(absoluteAmount > min)
                             {
                                 transactions.add(transaction);
                             }
-
                             cursor.moveToNext();
-
                         }
                         cursor.close();
                         db.close();
@@ -250,7 +250,6 @@ public class TransactionActivity extends AppCompatActivity {
                         startActivity(homeIntent);
                         break;
                 }
-
 
                 return false;
             }

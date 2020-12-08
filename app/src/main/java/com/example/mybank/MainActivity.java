@@ -295,11 +295,16 @@ public class MainActivity extends AppCompatActivity {
 
             if(null != aDouble)
             {
-                txtAmount.setText(String.valueOf(aDouble) + " $");
+                if(aDouble < 0)
+                {
+                    txtAmount.setText(String.valueOf(aDouble) + " PLN");
+                    txtAmount.setTextColor(Color.RED);
+                }
+                txtAmount.setText(String.valueOf(aDouble) + " PLN");
             }
             else
             {
-                txtAmount.setText("0.0 $");
+                txtAmount.setText("0.0 PLN");
             }
         }
     }
@@ -479,24 +484,22 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 LineDataSet dataSet = new LineDataSet(entries, "Profit chart");
-                dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                dataSet.setMode(LineDataSet.Mode.LINEAR);
                 dataSet.setDrawFilled(true);
                 dataSet.setFillColor(Color.GREEN);
                 LineData data = new LineData(dataSet);
                 XAxis xAxis = lineChart.getXAxis();
                 xAxis.setSpaceMin(1);
                 xAxis.setSpaceMax(1);
-                xAxis.setAxisMaximum(12);
                 xAxis.setEnabled(false);
                 YAxis yAxis = lineChart.getAxisRight();
                 yAxis.setEnabled(false);
                 YAxis leftAxis = lineChart.getAxisLeft();
-                leftAxis.setAxisMinimum(10);
-                leftAxis.setAxisMaximum(100);
                 leftAxis.setDrawGridLines(false);
                 /*Description description = new Description();
                 description.setText("Desc");*/
                 lineChart.setDescription(null);
+                lineChart.animateX(2000);
                 lineChart.animateY(2000);
                 lineChart.setData(data);
                 lineChart.invalidate();
@@ -518,7 +521,7 @@ public class MainActivity extends AppCompatActivity {
                         new String[] {String.valueOf(integers[0])}, null, null, null);
 
 
-                if(null != cursor && cursor.getCount()>0)
+                if(null != cursor)
                 {
 
                     if(cursor.moveToNext())
@@ -558,6 +561,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<Shopping> shoppings) {
             super.onPostExecute(shoppings);
 
+
             if(null!=shoppings)
             {
                 Log.d(TAG, "onPostExecute: shoppings is not null");
@@ -589,7 +593,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             if(!doesDayExist)
                             {
-                                entries.add(new BarEntry(day, (float) s.getPrice()));
+                                entries.add(new BarEntry(day, (float) (s.getPrice())));
                             }
                             else
                             {
@@ -597,7 +601,7 @@ public class MainActivity extends AppCompatActivity {
                                 {
                                     if(e.getX() == day)
                                     {
-                                        e.setY(e.getY() + (float)s.getPrice());
+                                        e.setY(e.getY() + (float)(s.getPrice()));
                                     }
                                 }
                             }
@@ -614,17 +618,17 @@ public class MainActivity extends AppCompatActivity {
 
                 BarDataSet dataSet = new BarDataSet(entries, "Shopping chart");
                 dataSet.setColor(Color.RED);
+                dataSet.setFormSize(5);
                 BarData data = new BarData(dataSet);
 
                 barChart.getAxisRight().setEnabled(false);
                 XAxis xAxis = barChart.getXAxis();
-                xAxis.setAxisMaximum(31);
                 xAxis.setEnabled(false);
                 YAxis yAxis = barChart.getAxisLeft();
-                yAxis.setAxisMinimum(10);
                 yAxis.setDrawGridLines(false);
                 barChart.setDescription(null);
                 barChart.setData(data);
+                barChart.animateY(2000);
                 barChart.invalidate();
             }
             else
@@ -702,13 +706,16 @@ public class MainActivity extends AppCompatActivity {
         {
             case R.id.menu_mywallet:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setTitle("Wallet")
-                        .setMessage("Developed by D.Kijowski - Zielona Góra")
-                        .setPositiveButton("Invite friends", new DialogInterface.OnClickListener() {
+                        .setTitle("Message")
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String message = "Hey, it's a message for you";
 
+                            }
+                        })
+                        .setPositiveButton("Send Message", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(Intent.ACTION_SEND);
                                 intent.putExtra(Intent.EXTRA_TEXT, "");
                                 intent.setType("text/plain");
@@ -716,6 +723,7 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(chooserIntent);
                             }
                         });
+
                 builder.show();
                 break;
 

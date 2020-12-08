@@ -9,18 +9,18 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        >
+        android:layout_centerHorizontal="true">
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/shoppingRellayout"
+            android:layout_marginTop="10dp"
             >
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/shoppingImage"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/ic_cart"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -35,12 +35,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/investmentRelLayout"
-            android:layout_below="@+id/shoppingRellayout">
+            android:layout_below="@+id/shoppingRellayout"
+            android:layout_marginTop="10dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/investmentImage"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/ic_leasing"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,19 +56,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/loanRelLayout"
-            android:layout_below="@+id/investmentRelLayout">
+            android:layout_below="@+id/investmentRelLayout"
+            android:layout_marginTop="10dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/loanImage"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/ic_leasing"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/loanImage"
-                android:text="Loan"
+                android:text="Leasing"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
         </RelativeLayout>
@@ -75,12 +77,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sendRecRelLayout"
-            android:layout_below="@+id/loanRelLayout">
+            android:layout_below="@+id/loanRelLayout"
+            android:layout_marginTop="10dp">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/sendRecImage"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/ic_transaction"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

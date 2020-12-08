@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "address TEXT, " + "image_url TEXT, " + "remained_amount DOUBLE)";
 
         String createShoppingTable = "CREATE TABLE shopping (_id INTEGER PRIMARY KEY AUTOINCREMENT, item_id INTEGER, " +
-                                    "user_id INTEGER, transaction_id INTEGER, price DOUBLE, date DATE, description TEXT)";
+                                    "user_id INTEGER, transaction_id INTEGER, name TEXT, price DOUBLE, date DATE, description TEXT)";
 
         String createInvestmentTable = "CREATE TABLE investments (_id INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE, " +
                 "monthly_roi DOUBLE, name TEXT, init_date DATE, finish_date DATE, user_id INTEGER, transaction_id INTEGER)";
@@ -39,7 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createTransactionTable = "CREATE TABLE transactions (_id INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE, date DATE," +
                 "type TEXT, user_id INTEGER, recipient TEXT, description TEXT)";
 
-        String createItemsTable = "CREATE TABLE items (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, image_url TEXT," +
+        String createItemsTable = "CREATE TABLE items (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT," +
                 "description TEXT)";
 
         db.execSQL(createUserTable);
@@ -49,10 +49,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTransactionTable);
         db.execSQL(createItemsTable);
 
-        addInitialItems(db);
-        addTestTransaction(db);
+        /*addTestTransaction(db);
         addTestShopping(db);
-        addTestProfit(db);
+        addTestProfit(db);*/
 
     }
 
@@ -123,15 +122,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    private void addInitialItems(SQLiteDatabase db)
-    {
-        Log.d(TAG, "addInitialItems: started");
-        ContentValues values = new ContentValues();
-        values.put("name", "bike");
-        values.put("description", "The perfect bike for you!");
-        values.put("image_url", "https://images.internetstores.de/products//1089728/02/294799/NS_Bikes_Movement_1_26__black_splash[1920x1920].jpg?forceSize=false&forceAspectRatio=true&useTrim=true#xd_co_f=ZTY5ZjQwYTgtYzk2ZS00MGRmLWI4NzEtZDM0MGQxMzU3NDIz~");
-        db.insert("items", null, values);
-    }
 
 
     @Override

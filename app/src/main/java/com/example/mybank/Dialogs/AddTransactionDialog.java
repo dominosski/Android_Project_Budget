@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.mybank.AddInvestmentActivity;
-import com.example.mybank.AddLoanActivity;
+import com.example.mybank.AddLeasingActivity;
 import com.example.mybank.Models.ShoppingActivity;
 import com.example.mybank.R;
 import com.example.mybank.TransferActivity;
@@ -54,7 +54,7 @@ public class AddTransactionDialog extends DialogFragment {
         loan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AddLoanActivity.class);
+                Intent intent = new Intent(getActivity(), AddLeasingActivity.class);
                 startActivity(intent);
             }
         });
@@ -68,7 +68,7 @@ public class AddTransactionDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle("Add transaction")
-                .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 

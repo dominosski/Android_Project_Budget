@@ -19,7 +19,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mybank.Adapters.ItemsAdapter;
 import com.example.mybank.Database.DatabaseHelper;
 import com.example.mybank.Models.Item;
 import com.example.mybank.R;
@@ -27,15 +26,12 @@ import com.example.mybank.R;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class SelectItemDialog extends DialogFragment implements ItemsAdapter.GetItem {
+public class SelectItemDialog extends DialogFragment{
     private static final String TAG = "SelectItemDialog";
 
     private EditText edtTxtItemName;
     private RecyclerView itemRecView;
 
-    private ItemsAdapter.GetItem getItem;
-
-    private ItemsAdapter adapter;
 
     private DatabaseHelper databaseHelper;
 
@@ -49,11 +45,6 @@ public class SelectItemDialog extends DialogFragment implements ItemsAdapter.Get
 
         edtTxtItemName = (EditText)view.findViewById(R.id.edtTxtItemName);
         itemRecView = (RecyclerView) view.findViewById(R.id.itemRecView);
-
-        adapter = new ItemsAdapter(getActivity(), this);
-
-        itemRecView.setAdapter(adapter);
-        itemRecView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         databaseHelper = new DatabaseHelper(getActivity());
 
@@ -97,21 +88,6 @@ public class SelectItemDialog extends DialogFragment implements ItemsAdapter.Get
         }
     }
 
-    @Override
-    public void OnGettingItemResult(Item item) {
-        Log.d(TAG, "OnGettingItemResult: item: " + item.toString());
-        try {
-            getItem = (ItemsAdapter.GetItem) getActivity();
-            getItem.OnGettingItemResult(item);
-            dismiss();
-        }
-        catch (ClassCastException e)
-        {
-            e.printStackTrace();
-        }
-
-
-    }
 
     private class GetAllItems extends AsyncTask<Void, Void, ArrayList<Item>>
     {
@@ -130,7 +106,6 @@ public class SelectItemDialog extends DialogFragment implements ItemsAdapter.Get
                             item.set_id(cursor.getInt(cursor.getColumnIndex("_id")));
                             item.setName(cursor.getString(cursor.getColumnIndex("name")));
                             item.setDescription(cursor.getString(cursor.getColumnIndex("description")));
-                            item.setImage_url(cursor.getString(cursor.getColumnIndex("image_url")));
                             items.add(item);
                             cursor.moveToNext();
                         }
@@ -163,15 +138,6 @@ public class SelectItemDialog extends DialogFragment implements ItemsAdapter.Get
         @Override
         protected void onPostExecute(ArrayList<Item> items) {
             super.onPostExecute(items);
-
-            if(null !=items)
-            {
-                adapter.setItems(items);
-            }
-            else
-            {
-                adapter.setItems(new ArrayList<Item>());
-            }
         }
     }
 
@@ -193,7 +159,6 @@ public class SelectItemDialog extends DialogFragment implements ItemsAdapter.Get
                             item.set_id(cursor.getInt(cursor.getColumnIndex("_id")));
                             item.setName(cursor.getString(cursor.getColumnIndex("name")));
                             item.setDescription(cursor.getString(cursor.getColumnIndex("description")));
-                            item.setImage_url(cursor.getString(cursor.getColumnIndex("image_url")));
                             items.add(item);
                             cursor.moveToNext();
                         }
@@ -223,15 +188,6 @@ public class SelectItemDialog extends DialogFragment implements ItemsAdapter.Get
         @Override
         protected void onPostExecute(ArrayList<Item> items) {
             super.onPostExecute(items);
-
-            if(null !=items)
-            {
-                adapter.setItems(items);
-            }
-            else
-            {
-                adapter.setItems(new ArrayList<Item>());
-            }
         }
     }
 

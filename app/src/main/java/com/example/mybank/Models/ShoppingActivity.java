@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.mybank.Adapters.ItemsAdapter;
 import com.example.mybank.Database.DatabaseHelper;
-import com.example.mybank.Dialogs.SelectItemDialog;
 import com.example.mybank.MainActivity;
 import com.example.mybank.R;
 import com.example.mybank.Utils;
@@ -32,7 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
-public class ShoppingActivity extends AppCompatActivity implements ItemsAdapter.GetItem {
+public class ShoppingActivity extends AppCompatActivity{
     private static final String TAG = "ShoppingActivity";
 
     private Calendar calendar = Calendar.getInstance();
@@ -48,12 +47,8 @@ public class ShoppingActivity extends AppCompatActivity implements ItemsAdapter.
     };
 
     private TextView txtWarning, txtItemName;
-    private ImageView itemImg;
-    private Button btnPickItem, btnPickDate, btnAdd;
-    private EditText edtTxtDate, edtTxtDesc, edtTxtItemPrice, edtTxtStore;
-    private RelativeLayout itemRelLayout;
-
-    private Item selectedItem;
+    private Button btnPickDate, btnAdd;
+    private EditText edtTxtDate, edtTxtDesc, edtTxtPrice, edtTxtStore, edtTxtName;
 
     private DatabaseHelper databaseHelper;
 
@@ -74,14 +69,6 @@ public class ShoppingActivity extends AppCompatActivity implements ItemsAdapter.
             }
         });
 
-        btnPickItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SelectItemDialog selectItemDialog = new SelectItemDialog();
-                selectItemDialog.show(getSupportFragmentManager(), "select item dialog");
-            }
-        });
-
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,9 +80,9 @@ public class ShoppingActivity extends AppCompatActivity implements ItemsAdapter.
     private void initAdd()
     {
         Log.d(TAG, "initAdd: started");
-        if(null != selectedItem)
+        if(!edtTxtName.getText().toString().equals(""))
         {
-            if(!edtTxtItemPrice.getText().toString().equals(""))
+            if(!edtTxtPrice.getText().toString().equals(""))
             {
                 if(!edtTxtDate.getText().toString().equals(""))
                 {
@@ -117,7 +104,7 @@ public class ShoppingActivity extends AppCompatActivity implements ItemsAdapter.
         else
         {
             txtWarning.setVisibility(View.VISIBLE);
-            txtWarning.setText("Please select an item");
+            txtWarning.setText("Please add outcome's name");
         }
     }
 
@@ -126,19 +113,14 @@ public class ShoppingActivity extends AppCompatActivity implements ItemsAdapter.
 
         txtWarning = (TextView) findViewById(R.id.txtWarning);
         txtItemName = (TextView) findViewById(R.id.txtItemName);
-
-        itemImg = (ImageView)findViewById(R.id.itemImg);
-
-        btnPickItem = (Button)findViewById(R.id.btnPick);
         btnPickDate = (Button)findViewById(R.id.btnPickDate);
         btnAdd = (Button)findViewById(R.id.btnAdd);
 
         edtTxtDate = (EditText)findViewById(R.id.edtTxtDate);
         edtTxtDesc = (EditText)findViewById(R.id.edtTxtDesc);
-        edtTxtItemPrice = (EditText)findViewById(R.id.edtTxtPrice);
+        edtTxtPrice = (EditText)findViewById(R.id.edtTxtPrice);
         edtTxtStore = (EditText)findViewById(R.id.edtTxtStore);
-
-        itemRelLayout = (RelativeLayout) findViewById(R.id.invisibleItemRelLayout);
+        edtTxtName = (EditText)findViewById(R.id.edtTxtOutcomeName);
     }
     private class AddShopping extends AsyncTask<Void, Void, Void>
     {
@@ -155,7 +137,7 @@ public class ShoppingActivity extends AppCompatActivity implements ItemsAdapter.
             Utils utils = new Utils(ShoppingActivity.this);
             loggedInUser = utils.isUserLoggedIn();
             this.date = edtTxtDate.getText().toString();
-            this.price = -Double.valueOf(edtTxtItemPrice.getText().toString());
+            this.price = Double.valueOf(edtTxtPrice.getText().toString());
             this.store = edtTxtStore.getText().toString();
             this.description = edtTxtDesc.getText().toString();
 
@@ -167,19 +149,18 @@ public class ShoppingActivity extends AppCompatActivity implements ItemsAdapter.
             try {
                 SQLiteDatabase db = databaseHelper.getWritableDatabase();
                 ContentValues transactionValue = new ContentValues();
-                transactionValue.put("amount", price);
+                transactionValue.put("amount", -price);
                 transactionValue.put("description", description);
                 transactionValue.put("user_id", loggedInUser.get_id());
-                transactionValue.put("type", "shoping");
+                transactionValue.put("type", "shopping");
                 transactionValue.put("date", date);
                 transactionValue.put("recipient", store);
                 long id = db.insert("transactions", null, transactionValue);
 
                 ContentValues shoppingValues = new ContentValues();
-                shoppingValues.put("item_id", selectedItem.get_id());
                 shoppingValues.put("transaction_id", id);
                 shoppingValues.put("user_id", loggedInUser.get_id());
-                shoppingValues.put("price", price);
+                shoppingValues.put("price", -price);
                 shoppingValues.put("description", description);
                 shoppingValues.put("date", date);
                 long shoppingId = db.insert("shopping", null, shoppingValues);
@@ -214,7 +195,7 @@ public class ShoppingActivity extends AppCompatActivity implements ItemsAdapter.
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            Toast.makeText(ShoppingActivity.this, selectedItem.getName() + " added successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ShoppingActivity.this, edtTxtName.getText().toString() + " added successfully", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(ShoppingActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -231,18 +212,5 @@ public class ShoppingActivity extends AppCompatActivity implements ItemsAdapter.
                 addShopping.cancel(true);
             }
         }
-    }
-
-    @Override
-    public void OnGettingItemResult(Item item) {
-        Log.d(TAG, "OnGettingItemResult: item: " + item.toString());
-        selectedItem = item;
-        itemRelLayout.setVisibility(View.VISIBLE);
-        Glide.with(this)
-                .asBitmap()
-                .load(item.getImage_url())
-                .into(itemImg);
-        txtItemName.setText(item.getName());
-        edtTxtDesc.setText(item.getDescription());
     }
 }

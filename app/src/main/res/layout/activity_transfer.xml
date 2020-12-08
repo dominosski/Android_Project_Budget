@@ -11,17 +11,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true">
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="100dp"
-            android:layout_marginBottom="100dp">
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Transfer"
+                    android:layout_centerHorizontal="true"
+                    android:paddingBottom="20dp"
+                    android:id="@+id/txtTransfer"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/amountLinLayout"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:layout_below="@+id/txtTransfer">
                 <TextView
                     android:id="@+id/txtAmount"
                     android:layout_width="wrap_content"

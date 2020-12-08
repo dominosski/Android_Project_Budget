@@ -39,7 +39,7 @@ public class LoanAdapter extends RecyclerView.Adapter<LoanAdapter.ViewHolder>{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_loans, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_leasings, parent, false);
 
         return new ViewHolder(view);
     }
