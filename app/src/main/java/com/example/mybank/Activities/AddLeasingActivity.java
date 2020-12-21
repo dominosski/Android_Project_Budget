@@ -1,4 +1,4 @@
-package com.example.mybank;
+package com.example.mybank.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.Constraints;
@@ -23,6 +23,8 @@ import android.widget.TextView;
 
 import com.example.mybank.Database.DatabaseHelper;
 import com.example.mybank.Models.User;
+import com.example.mybank.R;
+import com.example.mybank.Utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,7 +66,7 @@ public class AddLeasingActivity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
 
     private AddTransaction addTransaction;
-    private AddLoan addLoan;
+    private AddLeasing addLoan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,8 +168,8 @@ public class AddLeasingActivity extends AppCompatActivity {
                 values.put("recipient", name);
                 values.put("date", date);
                 values.put("user_id", integers[0]);
-                values.put("description", "Received amount for " + name + " loan");
-                values.put("type", "loan");
+                values.put("description", "Received amount for " + name + " leasing");
+                values.put("type", "leasings");
 
                 long transactionId = db.insert("transactions", null, values);
                 db.close();
@@ -183,13 +185,13 @@ public class AddLeasingActivity extends AppCompatActivity {
             super.onPostExecute(integer);
 
             if (null != integer) {
-                addLoan = new AddLoan();
+                addLoan = new AddLeasing();
                 addLoan.execute(integer);
             }
         }
     }
 
-    private class AddLoan extends AsyncTask<Integer, Void, Integer> {
+    private class AddLeasing extends AsyncTask<Integer, Void, Integer> {
 
         private int userId;
         private String name, initDate, finishDate;
@@ -231,9 +233,9 @@ public class AddLeasingActivity extends AppCompatActivity {
                     values.put("user_id", userId);
                     values.put("transaction_id", integers[0]);
 
-                    long loanId = db.insert("loans", null, values);
+                    long leasingId = db.insert("leasings", null, values);
 
-                    if (loanId != -1) {
+                    if (leasingId != -1) {
                         Cursor cursor = db.query("users", new String[]{"remained_amount"}, "_id=?",
                                 new String[]{String.valueOf(userId)}, null, null, null);
                         if (null != cursor) {
@@ -244,7 +246,7 @@ public class AddLeasingActivity extends AppCompatActivity {
                                 db.update("users", newValues, "_id=?", new String[]{String.valueOf(userId)});
                                 cursor.close();
                                 db.close();
-                                return (int) loanId;
+                                return (int) leasingId;
                             } else {
                                 cursor.close();
                                 db.close();
@@ -290,7 +292,7 @@ public class AddLeasingActivity extends AppCompatActivity {
                         days += 30;
 
                         Data data = new Data.Builder()
-                                .putInt("loan_id", integer)
+                                .putInt("leasings_id", integer)
                                 .putInt("user_id", userId)
                                 .putDouble("monthly_payment", monthlyPayment)
                                 .putString("name", name)
@@ -300,11 +302,11 @@ public class AddLeasingActivity extends AppCompatActivity {
                                 .setRequiresBatteryNotLow(true)
                                 .build();
 
-                        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(LoanWorker.class)
+                        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(LeasingWorker.class)
                                 .setInputData(data)
                                 .setConstraints(constraints)
                                 .setInitialDelay(days, TimeUnit.DAYS)
-                                .addTag("loan_payment")
+                                .addTag("leasing_payment")
                                 .build();
                         WorkManager.getInstance(AddLeasingActivity.this).enqueue(request);
                         Intent intent = new Intent(AddLeasingActivity.this, MainActivity.class);
@@ -354,7 +356,7 @@ public class AddLeasingActivity extends AppCompatActivity {
         edtTxtInitAmount = (EditText) findViewById(R.id.edtTxtInitAmount);
         edtTxtMonthlyPayment = (EditText) findViewById(R.id.edtTxtMonthlyPayment);
 
-        btnPickInitDate = (Button) findViewById(R.id.btnPickInitDate);
+        btnPickInitDate = (Button) findViewById(R.id.btnPickDate);
         btnPickFinishDate = (Button) findViewById(R.id.btnPickFinishDate);
         btnAddLoan = (Button) findViewById(R.id.btnAddLoan);
 

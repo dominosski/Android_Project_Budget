@@ -1,4 +1,4 @@
-package com.example.mybank;
+package com.example.mybank.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkManager;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -31,6 +32,8 @@ import com.example.mybank.Dialogs.AddTransactionDialog;
 import com.example.mybank.Models.Shopping;
 import com.example.mybank.Models.Transaction;
 import com.example.mybank.Models.User;
+import com.example.mybank.R;
+import com.example.mybank.Utils.Utils;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -90,10 +93,7 @@ public class MainActivity extends AppCompatActivity {
         utils = new Utils(this);
         User user = utils.isUserLoggedIn();
 
-        if(null!=user)
-        {
-            Toast.makeText(this, "User: " + user.getFirst_name() + " logged in", Toast.LENGTH_SHORT).show();
-        }else
+        if(null==user)
         {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         initBarChart();
 
         Log.d(TAG, "onCreate: work " + WorkManager.getInstance(this).getWorkInfosByTag("profit"));
-        Log.d(TAG, "onCreate: loan" + WorkManager.getInstance(this).getWorkInfosByTag("loan_payment"));
+        Log.d(TAG, "onCreate: leasing" + WorkManager.getInstance(this).getWorkInfosByTag("leasing_payment"));
 
     }
 
@@ -122,6 +122,15 @@ public class MainActivity extends AppCompatActivity {
         {
             getSpending.execute(user.get_id());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(MainActivity.this, ProjectActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void initLineChart() {
@@ -164,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("My Bank")
+                        .setTitle("My Budget")
                         .setMessage("Created and developed by Dominik Kijowski")
                         .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
                             @Override
@@ -255,28 +264,72 @@ public class MainActivity extends AppCompatActivity {
     {
         @Override
         protected Double doInBackground(Integer... integers) {
+
+            //TODO FINISH IT
             try {
                 SQLiteDatabase db = databaseHelper.getReadableDatabase();
-                Cursor cursor = db.query("users", new String[] {"remained_amount"}, "_id=?",
-                        new String[] {String.valueOf(integers[0])}, null, null, null);
-
-                if (null!=cursor)
+                Cursor cursor1;
+                Cursor cursor2;
+                cursor1 = db.query("transactions", new String[]{"_id"}, null, null, null, null, null);
+                if(cursor1 != null)
                 {
-                    if (cursor.moveToFirst())
+                    if(!cursor1.moveToFirst())
                     {
-                        double amount = cursor.getDouble(cursor.getColumnIndex("remained_amount"));
-                        cursor.close();
-                        db.close();
-                        return amount;
+                        cursor1 = db.query("projects", new String[]{"init_amount"},null, null, null, null, null);
+                        if(cursor1 != null)
+                        {
+                            if(cursor1.moveToFirst())
+                            {   User user = utils.isUserLoggedIn();
+                                double initAmount = cursor1.getDouble(cursor1.getColumnIndex("init_amount"));
+                                ContentValues values = new ContentValues();
+                                values.put("remained_amount", initAmount);
+                                long id = db.update("users", values, "_id=?", new String[]{String.valueOf(user.get_id())});
+                                cursor1.close();
+                                db.close();
+                                return initAmount;
+                            }
+                            cursor1.close();
+                            db.close();
+                            return null;
+                        }
+                        else
+                        {
+                            cursor1.close();
+                            db.close();
+                            return null;
+                        }
                     }
                     else
                     {
-                        cursor.close();
-                        db.close();
-                        return null;
+                        cursor2 = db.query("users", new String[] {"remained_amount"}, "_id=?",
+                                new String[] {String.valueOf(integers[0])}, null, null, null);
+
+                        if (null!=cursor2)
+                        {
+                            if (cursor2.moveToFirst())
+                            {
+                                double amount = cursor2.getDouble(cursor2.getColumnIndex("remained_amount"));
+                                cursor2.close();
+                                db.close();
+                                return amount;
+                            }
+                            else
+                            {
+                                cursor2.close();
+                                db.close();
+                                return null;
+                            }
+                        }else
+                        {
+                            db.close();
+                            return null;
+                        }
                     }
-                }else
+
+                }
+                else
                 {
+                    cursor1.close();
                     db.close();
                     return null;
                 }
@@ -378,7 +431,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 SQLiteDatabase db = databaseHelper.getReadableDatabase();
                 Cursor cursor = db.query("transactions", null, "user_id=? AND type=?",
-                        new String[] {String.valueOf(integers[0]),"profit"}, null, null, null);
+                        new String[] {String.valueOf(integers[0]),"profit"}, "date", null, null);
                 if(null != cursor)
                 {
                     if(cursor.moveToFirst())
@@ -436,37 +489,37 @@ public class MainActivity extends AppCompatActivity {
                         Date date = new SimpleDateFormat("yyyy-MM-dd").parse(t.getDate());
 
                         Calendar calendar = Calendar.getInstance();
-                        int year = calendar.get(Calendar.YEAR);
                         calendar.setTime(date);
-                        int month = calendar.get(Calendar.MONTH);
+                        int month = calendar.get(Calendar.MONTH)+1;
+                        int day = calendar.get(Calendar.DAY_OF_MONTH);
                         Log.d(TAG, "onPostExecute: month: " + month);
 
 
-                        if(calendar.get(Calendar.YEAR) == year)
+                        if(calendar.get(Calendar.MONTH)+1 == month)
                         {
-                            boolean doesMonthExist = false;
+                            boolean doesDayExist = false;
 
                             for(Entry e: entries)
                             {
-                                if(e.getX() == month)
+                                if(e.getX() == day)
                                 {
-                                    doesMonthExist = true;
+                                    doesDayExist = true;
                                 }
                                 else
                                 {
-                                    doesMonthExist = false;
+                                    doesDayExist = false;
                                 }
                             }
 
-                            if(!doesMonthExist)
+                            if(!doesDayExist)
                             {
-                                entries.add(new Entry(month, (float)t.getAmount()));
+                                entries.add(new Entry(day, (float)t.getAmount()));
                             }
                             else
                             {
                                 for (Entry e: entries)
                                 {
-                                    if(e.getX() == month)
+                                    if(e.getX() == day)
                                     {
                                         e.setY(e.getY() + (float) t.getAmount());
                                     }
@@ -484,23 +537,21 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 LineDataSet dataSet = new LineDataSet(entries, "Profit chart");
-                dataSet.setMode(LineDataSet.Mode.LINEAR);
+                dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
                 dataSet.setDrawFilled(true);
                 dataSet.setFillColor(Color.GREEN);
                 LineData data = new LineData(dataSet);
                 XAxis xAxis = lineChart.getXAxis();
+                xAxis.setEnabled(true);
                 xAxis.setSpaceMin(1);
                 xAxis.setSpaceMax(1);
-                xAxis.setEnabled(false);
+                xAxis.setAxisMaximum(31);
                 YAxis yAxis = lineChart.getAxisRight();
                 yAxis.setEnabled(false);
                 YAxis leftAxis = lineChart.getAxisLeft();
                 leftAxis.setDrawGridLines(false);
-                /*Description description = new Description();
-                description.setText("Desc");*/
                 lineChart.setDescription(null);
-                lineChart.animateX(2000);
-                lineChart.animateY(2000);
+                lineChart.animateY(1500);
                 lineChart.setData(data);
                 lineChart.invalidate();
             }
@@ -564,7 +615,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(null!=shoppings)
             {
-                Log.d(TAG, "onPostExecute: shoppings is not null");
+                Log.d(TAG, "onPostExecute: outgoings is not null");
                 ArrayList<BarEntry> entries = new ArrayList<>();
                 for(Shopping s: shoppings)
                 {
@@ -574,7 +625,7 @@ public class MainActivity extends AppCompatActivity {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(date);
                         int month = calendar.get(Calendar.MONTH)+1;
-                        int day = calendar.get(Calendar.DAY_OF_MONTH)+1;
+                        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
                         if(calendar.get(Calendar.MONTH)+1 == month)
                         {
@@ -616,14 +667,14 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onPostExecute: xx: " + e.getX() + " y: " + e.getY());
                 }
 
-                BarDataSet dataSet = new BarDataSet(entries, "Shopping chart");
+                BarDataSet dataSet = new BarDataSet(entries, "Outgoings chart");
                 dataSet.setColor(Color.RED);
                 dataSet.setFormSize(5);
                 BarData data = new BarData(dataSet);
-
                 barChart.getAxisRight().setEnabled(false);
                 XAxis xAxis = barChart.getXAxis();
-                xAxis.setEnabled(false);
+                xAxis.setEnabled(true);
+                xAxis.setAxisMaximum(31);
                 YAxis yAxis = barChart.getAxisLeft();
                 yAxis.setDrawGridLines(false);
                 barChart.setDescription(null);
@@ -654,13 +705,13 @@ public class MainActivity extends AppCompatActivity {
                         statsIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(statsIntent);
                     break;
-                    case R.id.menu_item_investment:
-                        Intent intent = new Intent(MainActivity.this, InvestmentActivity.class);
+                    case R.id.menu_item_notes:
+                        Intent intent = new Intent(MainActivity.this, NotesActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         break;
-                    case R.id.menu_item_loans:
-                        Intent loanIntent = new Intent(MainActivity.this, LoanActivity.class);
+                    case R.id.menu_item_leasings:
+                        Intent loanIntent = new Intent(MainActivity.this, LeasingActivity.class);
                         loanIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(loanIntent);
                         break;

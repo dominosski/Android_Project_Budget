@@ -14,11 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.mybank.AddInvestmentActivity;
-import com.example.mybank.AddLeasingActivity;
-import com.example.mybank.Models.ShoppingActivity;
+import com.example.mybank.Activities.AddLeasingActivity;
+import com.example.mybank.Activities.OutgoingActivity;
 import com.example.mybank.R;
-import com.example.mybank.TransferActivity;
+import com.example.mybank.Activities.TransferActivity;
 
 
 public class AddTransactionDialog extends DialogFragment {
@@ -26,31 +25,24 @@ public class AddTransactionDialog extends DialogFragment {
     private static final String TAG = "AddTransactionDialog";
 
 
-    private RelativeLayout shopping, investment, loan, transaction;
+    private RelativeLayout shopping, loan, transaction;
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_add_transaction, null);
-        shopping = view.findViewById(R.id.shoppingRellayout);
-        investment = view.findViewById(R.id.investmentRelLayout);
-        loan = view.findViewById(R.id.loanRelLayout);
+        shopping = view.findViewById(R.id.outgoingRelLayout);
+        loan = view.findViewById(R.id.leasingRelLayout);
         transaction = view.findViewById(R.id.sendRecRelLayout);
 
         shopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ShoppingActivity.class);
+                Intent intent = new Intent(getActivity(), OutgoingActivity.class);
                 startActivity(intent);
             }
         });
-        investment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AddInvestmentActivity.class);
-                startActivity(intent);
-            }
-        });
+
         loan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

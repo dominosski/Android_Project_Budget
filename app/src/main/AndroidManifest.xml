@@ -9,20 +9,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StatsActivity"></activity>
+        <activity android:name=".Activities.AddNoteActivity"/>
+        <activity android:name=".Activities.AddProjectActivity" />
+        <activity android:name=".Activities.NotesActivity" />
+        <activity android:name=".Activities.ProjectActivity" />
+        <activity android:name=".Activities.StatsActivity" />
         <activity
-            android:name=".TransactionActivity"
+            android:name=".Activities.TransactionActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
-        <activity android:name=".LoanActivity" />
-        <activity android:name=".AddLeasingActivity" />
-        <activity android:name=".TransferActivity" />
-        <activity android:name=".InvestmentActivity" />
-        <activity android:name=".AddInvestmentActivity" />
-        <activity android:name=".Models.ShoppingActivity" />
+        <activity android:name=".Activities.LeasingActivity" />
+        <activity android:name=".Activities.AddLeasingActivity" />
+        <activity android:name=".Activities.TransferActivity" />
+        <activity android:name=".Activities.OutgoingActivity" />
         <activity android:name=".Authentication.LoginActivity" />
         <activity android:name=".Authentication.RegisterActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,3 +35,6 @@
     </application>
 
 </manifest>
+
+
+

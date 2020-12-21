@@ -13,50 +13,30 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/shoppingRellayout"
+            android:id="@+id/outgoingRelLayout"
             android:layout_marginTop="10dp"
             >
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/shoppingImage"
+                android:id="@+id/outgoingImage"
                 android:src="@mipmap/ic_cart"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/shoppingImage"
-                android:text="Shopping"
+                android:layout_toRightOf="@+id/outgoingImage"
+                android:text="Outgoing"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/investmentRelLayout"
-            android:layout_below="@+id/shoppingRellayout"
-            android:layout_marginTop="10dp">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/investmentImage"
-                android:src="@mipmap/ic_leasing"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/investmentImage"
-                android:text="Investment"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/loanRelLayout"
-            android:layout_below="@+id/investmentRelLayout"
+            android:id="@+id/leasingRelLayout"
+            android:layout_below="@+id/outgoingRelLayout"
             android:layout_marginTop="10dp">
             <ImageView
                 android:layout_width="wrap_content"
@@ -77,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sendRecRelLayout"
-            android:layout_below="@+id/loanRelLayout"
+            android:layout_below="@+id/leasingRelLayout"
             android:layout_marginTop="10dp">
             <ImageView
                 android:layout_width="wrap_content"

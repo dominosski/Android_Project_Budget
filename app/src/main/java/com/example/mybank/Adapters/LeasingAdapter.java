@@ -20,16 +20,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class LoanAdapter extends RecyclerView.Adapter<LoanAdapter.ViewHolder>{
-    private static final String TAG = "LoanAdapter";
+public class LeasingAdapter extends RecyclerView.Adapter<LeasingAdapter.ViewHolder>{
+    private static final String TAG = "LeasingAdapter";
 
     private Context context;
 
-    public LoanAdapter(Context context) {
+    public LeasingAdapter(Context context) {
         this.context = context;
     }
 
-    public LoanAdapter() {
+    public LeasingAdapter() {
     }
 
     private ArrayList<Loan> loans = new ArrayList<>();
@@ -96,9 +96,7 @@ public class LoanAdapter extends RecyclerView.Adapter<LoanAdapter.ViewHolder>{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         return loss;
-
     }
 
     @Override

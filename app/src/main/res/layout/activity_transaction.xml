@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TransactionActivity">
+    tools:context=".Activities.TransactionActivity">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -46,12 +46,6 @@
                         android:layout_margin="5dp"
                         android:text="Outgoings"/>
                     <RadioButton
-                        android:id="@+id/rbInvestment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="Investments"/>
-                    <RadioButton
                         android:id="@+id/rbProfit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -64,7 +58,7 @@
                         android:layout_margin="5dp"
                         android:text="Leasings"/>
                     <RadioButton
-                        android:id="@+id/rbLoanPayment"
+                        android:id="@+id/rbLeasingPayment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"

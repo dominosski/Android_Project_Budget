@@ -1,4 +1,4 @@
-package com.example.mybank;
+package com.example.mybank.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,10 +17,11 @@ import com.example.mybank.Database.DatabaseHelper;
 import com.example.mybank.Models.Loan;
 import com.example.mybank.Models.Transaction;
 import com.example.mybank.Models.User;
+import com.example.mybank.R;
+import com.example.mybank.Utils.Utils;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -48,7 +49,7 @@ public class StatsActivity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
     private Utils utils;
 
-    private GetLoans getLoans;
+    private GetLeasings getLeasings;
     private GetTransactions getTransactions;
 
     @Override
@@ -67,8 +68,8 @@ public class StatsActivity extends AppCompatActivity {
         {
             getTransactions = new GetTransactions();
             getTransactions.execute(user.get_id());
-            getLoans = new GetLoans();
-            getLoans.execute(user.get_id());
+            getLeasings = new GetLeasings();
+            getLeasings.execute(user.get_id());
         }
 
     }
@@ -77,20 +78,28 @@ public class StatsActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if(null != getLoans)
+        if(null != getLeasings)
         {
-            if(!getLoans.isCancelled())
+            if(!getLeasings.isCancelled())
             {
-                getLoans.cancel(true);
+                getLeasings.cancel(true);
             }
         }
         if(getTransactions != null)
         {
-            if(!getLoans.isCancelled())
+            if(!getLeasings.isCancelled())
             {
-                getLoans.cancel(true);
+                getLeasings.cancel(true);
             }
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(StatsActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private class GetTransactions extends AsyncTask<Integer, Void, ArrayList<Transaction>>
@@ -162,7 +171,7 @@ public class StatsActivity extends AppCompatActivity {
                         calendar.setTime(date);
                         int month = calendar.get(Calendar.MONTH);
                         int year = calendar.get(Calendar.YEAR);
-                        int day = calendar.get(Calendar.DAY_OF_MONTH) + 1;
+                        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
                         if(month == currentMonth && year == currentYear)
                         {
@@ -205,35 +214,31 @@ public class StatsActivity extends AppCompatActivity {
                     Log.d(TAG, "onPostExecute: xx: " + e.getX() + " y: " + e.getY());
                 }
 
-                BarDataSet dataSet = new BarDataSet(entries, "Account activity");
+                BarDataSet dataSet = new BarDataSet(entries, "All of the account transactions");
                 dataSet.setColor(Color.GREEN);
                 BarData data = new BarData(dataSet);
-
                 barChart.getAxisRight().setEnabled(false);
                 XAxis xAxis = barChart.getXAxis();
                 xAxis.setAxisMaximum(31);
-                xAxis.setEnabled(false);
+                xAxis.setEnabled(true);
                 YAxis yAxis = barChart.getAxisLeft();
-                yAxis.setAxisMinimum(10);
                 yAxis.setDrawGridLines(false);
+                barChart.setDescription(null);
                 barChart.setData(data);
-                Description description = new Description();
-                description.setText("All of the account transactions");
-                description.setTextSize(12f);
-                barChart.setDescription(description);
+                barChart.animateY(1000);
                 barChart.invalidate();
             }
         }
     }
 
-    private class GetLoans extends AsyncTask<Integer, Void, ArrayList<Loan>>
+    private class GetLeasings extends AsyncTask<Integer, Void, ArrayList<Loan>>
     {
 
         @Override
         protected ArrayList<Loan> doInBackground(Integer... integers) {
             try {
                 SQLiteDatabase db = databaseHelper.getReadableDatabase();
-                Cursor cursor = db.query("loans", null, null, null, null, null, null);
+                Cursor cursor = db.query("leasings", null, null, null, null, null, null);
                 if(null != cursor)
                 {
                     if(cursor.moveToFirst())
@@ -281,16 +286,16 @@ public class StatsActivity extends AppCompatActivity {
             if(null != loans)
             {
                 ArrayList<PieEntry> entries = new ArrayList<>();
-                double totalLoansAmount = 0.0;
+                double totalLeasingsAmount = 0.0;
                 double totalRemainedAmount = 0.0;
 
                 for(Loan l: loans)
                 {
-                    totalLoansAmount += l.getInit_amount();
+                    totalLeasingsAmount += l.getInit_amount();
                     totalRemainedAmount += l.getRemained_amount();
                 }
 
-                entries.add(new PieEntry((float)totalLoansAmount, "Total leasings"));
+                entries.add(new PieEntry((float)totalLeasingsAmount, "Total leasings"));
                 entries.add(new PieEntry((float) totalRemainedAmount, "Remained leasings"));
                 PieDataSet dataSet = new PieDataSet(entries, "");
                 dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
@@ -299,6 +304,8 @@ public class StatsActivity extends AppCompatActivity {
                 pieChart.setDrawHoleEnabled(false);
                 pieChart.animateY(1000, Easing.EaseInOutCubic);
                 pieChart.setData(data);
+                pieChart.setDescription(null);
+                pieChart.setCenterTextSize(15);
                 pieChart.invalidate();
             }
         }
@@ -317,15 +324,15 @@ public class StatsActivity extends AppCompatActivity {
                     case R.id.menu_item_stats:
 
                         break;
-                    case R.id.menu_item_investment:
-                        Intent intent = new Intent(StatsActivity.this, InvestmentActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+                    case R.id.menu_item_notes:
+                        Intent notesIntent = new Intent(StatsActivity.this, NotesActivity.class);
+                        notesIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(notesIntent);
                         break;
-                    case R.id.menu_item_loans:
-                        Intent loanIntent = new Intent(StatsActivity.this, LoanActivity.class);
-                        loanIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(loanIntent);
+                    case R.id.menu_item_leasings:
+                        Intent leasingIntent = new Intent(StatsActivity.this, LeasingActivity.class);
+                        leasingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(leasingIntent);
                         break;
                     case R.id.menu_item_transaction:
                         Intent transactionIntent = new Intent(StatsActivity.this, TransactionActivity.class);

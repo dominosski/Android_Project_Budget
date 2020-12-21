@@ -1,4 +1,4 @@
-package com.example.mybank;
+package com.example.mybank.Activities;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,12 +16,12 @@ import com.example.mybank.Database.DatabaseHelper;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class LoanWorker extends Worker {
-    private static final String TAG = "LoanWorker";
+public class LeasingWorker extends Worker {
+    private static final String TAG = "LeasingWorker";
 
     private DatabaseHelper databaseHelper;
 
-    public LoanWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public LeasingWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         databaseHelper = new DatabaseHelper(context);
     }
@@ -44,8 +44,8 @@ public class LoanWorker extends Worker {
             ContentValues transactionValues = new ContentValues();
             transactionValues.put("amount", -monthlyPayment);
             transactionValues.put("user_id", userId);
-            transactionValues.put("type", "loan_payment");
-            transactionValues.put("description", "Monthly payment for " + name + " Loan");
+            transactionValues.put("type", "leasing_payment");
+            transactionValues.put("description", "Monthly payment for " + name + " Leasing");
             transactionValues.put("recipient", name);
 
             Calendar calendar = Calendar.getInstance();
@@ -71,7 +71,7 @@ public class LoanWorker extends Worker {
                         db.update("users", values, "_id=?", new String[] {String.valueOf(userId)});
                         cursor.close();
 
-                        Cursor secondCursor = db.query("loans", new String[] {"remained_amount"}, "_id=?",
+                        Cursor secondCursor = db.query("leasings", new String[] {"remained_amount"}, "_id=?",
                                 new String[] {String.valueOf(loanId)}, null, null, null);
                         if(null != secondCursor)
                         {
@@ -80,7 +80,7 @@ public class LoanWorker extends Worker {
                                 double currentLoanAmount = secondCursor.getDouble(secondCursor.getColumnIndex("remained_amount"));
                                 ContentValues secondValues = new ContentValues();
                                 secondValues.put("remained_amount", currentLoanAmount - monthlyPayment);
-                                db.update("loans", secondValues, "_id=?", new String[]{String.valueOf(loanId)});
+                                db.update("leasings", secondValues, "_id=?", new String[]{String.valueOf(loanId)});
                                 secondCursor.close();
                                 db.close();
                                 return Result.success();

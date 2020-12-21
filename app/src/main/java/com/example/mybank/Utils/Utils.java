@@ -1,10 +1,11 @@
-package com.example.mybank;
+package com.example.mybank.Utils;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.mybank.Authentication.LoginActivity;
 import com.example.mybank.Authentication.RegisterActivity;
 import com.example.mybank.Models.User;
 import com.google.gson.Gson;
@@ -50,7 +51,7 @@ public class Utils {
 
         editor.remove("user");
         editor.commit();
-        Intent intent = new Intent(context, RegisterActivity.class);
+        Intent intent = new Intent(context, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
 

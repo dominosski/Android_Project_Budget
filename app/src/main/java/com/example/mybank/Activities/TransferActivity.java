@@ -1,4 +1,4 @@
-package com.example.mybank;
+package com.example.mybank.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import com.example.mybank.Database.DatabaseHelper;
 import com.example.mybank.Models.User;
+import com.example.mybank.R;
+import com.example.mybank.Utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -54,6 +56,14 @@ public class TransferActivity extends AppCompatActivity {
         initViews();
 
         setOnClickListeners();
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(TransferActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void setOnClickListeners() {
@@ -143,7 +153,7 @@ public class TransferActivity extends AppCompatActivity {
                 values.put("date", date);
                 values.put("description", description);
                 values.put("user_id", integers[0]);
-                values.put("type", this.type);
+                values.put("type", type);
 
                 long id = db.insert("transactions", null, values);
                 Log.d(TAG, "doInBackground: new Transaction id: " + id);
@@ -151,7 +161,7 @@ public class TransferActivity extends AppCompatActivity {
                     Cursor cursor = db.query("users", new String[]{"remained_amount"}, "_id=?",
                             new String[]{String.valueOf(integers[0])}, null, null, null);
                     if (null != cursor) {
-                        if (cursor.moveToFirst()) {
+                        if(cursor.moveToFirst()) {
                             double currentRemainedAmount = cursor.getDouble(cursor.getColumnIndex("remained_amount"));
                             cursor.close();
 
@@ -159,6 +169,7 @@ public class TransferActivity extends AppCompatActivity {
                             newValues.put("remained_amount", currentRemainedAmount + amount);
                             int affectedRows = db.update("users", newValues, "_id=?", new String[]{String.valueOf(integers[0])});
                             Log.d(TAG, "doInBackground: updatedRows: " + affectedRows);
+                            db.close();
                         } else {
                             cursor.close();
                             db.close();

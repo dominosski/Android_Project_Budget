@@ -14,12 +14,12 @@
         android:icon="@drawable/ic_home"/>
     <item
         android:title="Leasings"
-        android:id="@+id/menu_item_loans"
-        android:icon="@drawable/ic_loan"/>
+        android:id="@+id/menu_item_leasings"
+        android:icon="@drawable/ic_leasing"/>
     <item
-        android:title="Investment"
-        android:id="@+id/menu_item_investment"
-        android:icon="@drawable/ic_investment"/>
+        android:title="Notes"
+        android:id="@+id/menu_item_notes"
+        android:icon="@drawable/ic_notes"/>
 
 
 </menu>

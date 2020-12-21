@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TransferActivity"
+    tools:context=".Activities.TransferActivity"
     android:padding="5dp">
 
     <androidx.core.widget.NestedScrollView
@@ -84,7 +84,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txtDate"
                 android:padding="10dp">
-
                 <EditText
                     android:id="@+id/edtTxtDate"
                     android:layout_width="match_parent"

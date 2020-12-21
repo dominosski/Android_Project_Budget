@@ -16,23 +16,27 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mybank.Activities.ProjectActivity;
 import com.example.mybank.Database.DatabaseHelper;
-import com.example.mybank.MainActivity;
 import com.example.mybank.Models.User;
 import com.example.mybank.R;
-import com.example.mybank.Utils;
+import com.example.mybank.Utils.Utils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity";
 
     private TextView txtWarning, txtLogin;
     private Button btnRegister;
-    private EditText edtTxtEmail, edtTextName, edtTxtAddress, edtTxtPassword;
+    private EditText edtTxtEmail, edtTextName, edtTxtPassword;
 
     private DatabaseHelper databaseHelper;
 
     private DoesUserExist doesUserExist;
     private RegisterUser registerUser;
+    private String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{8,}$";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +70,18 @@ public class RegisterActivity extends AppCompatActivity {
         String email = edtTxtEmail.getText().toString();
         String password = edtTxtPassword.getText().toString();
 
+        Pattern pattern = Pattern.compile(passwordRegex);
+        Matcher m = pattern.matcher(password);
+
         if(email.equals("") || password.equals(""))
         {
             txtWarning.setVisibility(View.VISIBLE);
             txtWarning.setText("Please enter Email and Password");
+        }
+        else if(m.matches() == false)
+        {
+            txtWarning.setVisibility(View.VISIBLE);
+            txtWarning.setText("Password must contain at least 1 lower case and 1 upper case letter, 1 number, 1 special character, and must be 8-20 characters long.");
         }
         else
         {
@@ -149,7 +161,6 @@ public class RegisterActivity extends AppCompatActivity {
     {
         private String email;
         private String password;
-        private String address;
         private String first_name;
         private String last_name;
         @Override
@@ -158,7 +169,6 @@ public class RegisterActivity extends AppCompatActivity {
 
             String email = edtTxtEmail.getText().toString();
             String password = edtTxtPassword.getText().toString();
-            String address = edtTxtAddress.getText().toString();
             String name = edtTextName.getText().toString();
 
             this.email = email;
@@ -194,7 +204,6 @@ public class RegisterActivity extends AppCompatActivity {
                 ContentValues values = new ContentValues();
                 values.put("email", this.email);
                 values.put("password", this.password);
-                values.put("address", this.address);
                 values.put("first_name", this.first_name);
                 values.put("last_name", this.last_name);
                 values.put("remained_amount", 0.0);
@@ -212,7 +221,6 @@ public class RegisterActivity extends AppCompatActivity {
                         User user = new User();
                         user.set_id(cursor.getInt(cursor.getColumnIndex("_id")));
                         user.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-                        user.setAddress(cursor.getString(cursor.getColumnIndex("address")));
                         user.setPassword(cursor.getString(cursor.getColumnIndex("password")));
                         user.setFirst_name(cursor.getString(cursor.getColumnIndex("first_name")));
                         user.setLast_name(cursor.getString(cursor.getColumnIndex("last_name")));
@@ -251,7 +259,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(RegisterActivity.this,"User " + user.getEmail() + " registered succesfully",Toast.LENGTH_SHORT).show();
                 Utils utils = new Utils(RegisterActivity.this);
                 utils.addUserToSharedPreferences(user);
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, ProjectActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
 
@@ -270,7 +278,6 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = (Button)findViewById(R.id.btnRegister);
 
         edtTextName = (EditText)findViewById(R.id.edtTxtName);
-        edtTxtAddress = (EditText)findViewById(R.id.edtTxtAddress);
         edtTxtEmail = (EditText)findViewById(R.id.edtTxtEmail);
         edtTxtPassword = (EditText)findViewById(R.id.edtTxtPassword);
 

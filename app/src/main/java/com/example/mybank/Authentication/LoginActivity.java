@@ -15,10 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.mybank.Database.DatabaseHelper;
-import com.example.mybank.MainActivity;
+import com.example.mybank.Activities.MainActivity;
 import com.example.mybank.Models.User;
 import com.example.mybank.R;
-import com.example.mybank.Utils;
+import com.example.mybank.Utils.Utils;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";

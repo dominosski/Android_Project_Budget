@@ -1,4 +1,4 @@
-package com.example.mybank;
+package com.example.mybank.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +23,8 @@ import com.example.mybank.Adapters.TransactionAdapter;
 import com.example.mybank.Database.DatabaseHelper;
 import com.example.mybank.Models.Transaction;
 import com.example.mybank.Models.User;
+import com.example.mybank.R;
+import com.example.mybank.Utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -76,6 +78,14 @@ public class TransactionActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(TransactionActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
     private void initSearch() {
         Log.d(TAG, "initSearch: started");
 
@@ -111,14 +121,11 @@ public class TransactionActivity extends AppCompatActivity {
             this.min = Double.valueOf(edtTxtMin.getText().toString());
 
             switch (rgType.getCheckedRadioButtonId()) {
-                case R.id.rbInvestment:
-                    type = "investments";
-                    break;
                 case R.id.rbLoan:
                     type = "loan";
                     break;
-                case R.id.rbLoanPayment:
-                    type = "loan_payment";
+                case R.id.rbLeasingPayment:
+                    type = "leasing_payment";
                     break;
                 case R.id.rbProfit:
                     type = "profit";
@@ -231,13 +238,13 @@ public class TransactionActivity extends AppCompatActivity {
                         statsIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(statsIntent);
                         break;
-                    case R.id.menu_item_investment:
-                        Intent intent = new Intent(TransactionActivity.this, InvestmentActivity.class);
+                    case R.id.menu_item_notes:
+                        Intent intent = new Intent(TransactionActivity.this, NotesActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         break;
-                    case R.id.menu_item_loans:
-                        Intent loanIntent = new Intent(TransactionActivity.this, LoanActivity.class);
+                    case R.id.menu_item_leasings:
+                        Intent loanIntent = new Intent(TransactionActivity.this, LeasingActivity.class);
                         loanIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(loanIntent);
                         break;

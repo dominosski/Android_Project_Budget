@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.AddProjectActivity"
+    android:layout_margin="5dp">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Add Project"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:id="@+id/txtAddProject" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/txtAddProject"
+                android:layout_marginTop="30dp"
+                android:id="@+id/nameLinLayout"
+                android:layout_marginLeft="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Project Name: "
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edtTxtProjectName"
+                    android:hint="project name"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Initial Date: "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:id="@+id/txtInitDate"
+                android:layout_below="@+id/nameLinLayout"
+                android:layout_marginLeft="5dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtInitDate"
+                android:layout_marginTop="15dp"
+                android:id="@+id/initDateRelLayout"
+                android:layout_marginLeft="5dp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edtTxtInitDate"
+                    android:hint="init date"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="Pick Date"
+                    android:id="@+id/btnPickDate"/>
+
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Finish Date: "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:id="@+id/txtFinishDate"
+                android:layout_below="@+id/initDateRelLayout"
+                android:layout_marginLeft="5dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtFinishDate"
+                android:layout_marginTop="15dp"
+                android:id="@+id/finishDateRelLayout"
+                android:layout_marginLeft="5dp">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edtTxtFinishDate"
+                    android:hint="finish date"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="Pick Date"
+                    android:id="@+id/btnPickFinishDate"/>
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Initial budget: "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:id="@+id/txtBudget"
+                android:layout_below="@+id/finishDateRelLayout"
+                android:layout_marginLeft="5dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/txtBudget"
+                android:layout_marginTop="15dp"
+                android:id="@+id/initBudgetLinLayout"
+                android:layout_marginLeft="5dp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edtTxtInitBudget"
+                    android:hint="initial budget"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/initBudgetLinLayout"
+                android:layout_marginTop="75dp"
+                android:id="@+id/btnAddLinLayout">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnAddProject"
+                    android:layout_centerHorizontal="true"
+                    android:text="Add project"
+                    android:background="@color/green"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/txtWarning"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/btnAddProject"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/orange"
+                    android:visibility="gone"
+                    android:text="Warning"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</RelativeLayout>

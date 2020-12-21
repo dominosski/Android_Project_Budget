@@ -1,4 +1,4 @@
-package com.example.mybank.Models;
+package com.example.mybank.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,24 +15,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.example.mybank.Adapters.ItemsAdapter;
 import com.example.mybank.Database.DatabaseHelper;
-import com.example.mybank.MainActivity;
+import com.example.mybank.Models.User;
 import com.example.mybank.R;
-import com.example.mybank.Utils;
+import com.example.mybank.Utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
-public class ShoppingActivity extends AppCompatActivity{
-    private static final String TAG = "ShoppingActivity";
+public class OutgoingActivity extends AppCompatActivity{
+    private static final String TAG = "OutgoingActivity";
 
     private Calendar calendar = Calendar.getInstance();
 
@@ -64,7 +60,7 @@ public class ShoppingActivity extends AppCompatActivity{
         btnPickDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(ShoppingActivity.this, dateSetListener, calendar.get(Calendar.YEAR),
+                new DatePickerDialog(OutgoingActivity.this, dateSetListener, calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
@@ -75,6 +71,14 @@ public class ShoppingActivity extends AppCompatActivity{
                 initAdd();
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(OutgoingActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void initAdd()
@@ -134,14 +138,14 @@ public class ShoppingActivity extends AppCompatActivity{
         protected void onPreExecute() {
             super.onPreExecute();
 
-            Utils utils = new Utils(ShoppingActivity.this);
+            Utils utils = new Utils(OutgoingActivity.this);
             loggedInUser = utils.isUserLoggedIn();
             this.date = edtTxtDate.getText().toString();
             this.price = Double.valueOf(edtTxtPrice.getText().toString());
             this.store = edtTxtStore.getText().toString();
             this.description = edtTxtDesc.getText().toString();
 
-            databaseHelper = new DatabaseHelper(ShoppingActivity.this);
+            databaseHelper = new DatabaseHelper(OutgoingActivity.this);
         }
 
         @Override
@@ -195,8 +199,8 @@ public class ShoppingActivity extends AppCompatActivity{
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            Toast.makeText(ShoppingActivity.this, edtTxtName.getText().toString() + " added successfully", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(ShoppingActivity.this, MainActivity.class);
+            Toast.makeText(OutgoingActivity.this, edtTxtName.getText().toString() + " added successfully", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(OutgoingActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }

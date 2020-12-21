@@ -24,30 +24,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "onCreate: started database helper");
 
         String createUserTable = "CREATE TABLE users  (_id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL," +
-                " password TEXT NOT NULL," + "first_name TEXT, " + "last_name TEXT, " +
-                "address TEXT, " + "image_url TEXT, " + "remained_amount DOUBLE)";
+                " password TEXT NOT NULL," + "first_name TEXT, " + "last_name TEXT, " + "remained_amount DOUBLE)";
 
         String createShoppingTable = "CREATE TABLE shopping (_id INTEGER PRIMARY KEY AUTOINCREMENT, item_id INTEGER, " +
                                     "user_id INTEGER, transaction_id INTEGER, name TEXT, price DOUBLE, date DATE, description TEXT)";
 
-        String createInvestmentTable = "CREATE TABLE investments (_id INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE, " +
-                "monthly_roi DOUBLE, name TEXT, init_date DATE, finish_date DATE, user_id INTEGER, transaction_id INTEGER)";
-
-        String createLoansTable = "CREATE TABLE loans (_id INTEGER PRIMARY KEY AUTOINCREMENT, init_date DATE, finish_date DATE," +
+        String createLeasingsTable = "CREATE TABLE leasings (_id INTEGER PRIMARY KEY AUTOINCREMENT, init_date DATE, finish_date DATE," +
                 "init_amount DOUBLE, remained_amount DOUBLE, monthly_payment DOUBLE, monthly_roi DOUBLE, name TEXT, user_id INTEGER, transaction_id INTEGER)";
 
         String createTransactionTable = "CREATE TABLE transactions (_id INTEGER PRIMARY KEY AUTOINCREMENT, amount DOUBLE, date DATE," +
                 "type TEXT, user_id INTEGER, recipient TEXT, description TEXT)";
 
-        String createItemsTable = "CREATE TABLE items (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT," +
-                "description TEXT)";
+        String createProjectsTable = "CREATE TABLE projects (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT," +
+                "init_date DATE, finish_date DATE, init_amount DOUBLE, user_id INTEGER)";
+
+        String createNotesTable = "CREATE TABLE notes (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date DATE, description TEXT, priority INT, user_id INTEGER)";
+        //TODO String createActualProjectTable = "CREATE TABLE actualTable (_id INTEGER PRIMARY KEY AUTOINCREMENT, projects_id INTEGER, user_id INTEGER", transactions_id;
 
         db.execSQL(createUserTable);
         db.execSQL(createShoppingTable);
-        db.execSQL(createInvestmentTable);
-        db.execSQL(createLoansTable);
+        db.execSQL(createLeasingsTable);
         db.execSQL(createTransactionTable);
-        db.execSQL(createItemsTable);
+        db.execSQL(createProjectsTable);
+        db.execSQL(createNotesTable);
+
 
         /*addTestTransaction(db);
         addTestShopping(db);

@@ -8,12 +8,14 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp">
         <ImageView
             android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:id="@+id/logo"
-            android:layout_centerHorizontal="true"/>
+            android:layout_height="100dp"
+            android:src="@mipmap/ic_user"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/logo"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,22 +46,12 @@
             android:hint="Name"
             android:inputType="text"
             android:id="@+id/edtTxtName"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/edtTxtName"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
-            android:hint="Address"
-            android:id="@+id/edtTxtAddress"
-            android:lines="2"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnRegister"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/edtTxtAddress"
+            android:layout_below="@+id/edtTxtName"
             android:layout_marginTop="30dp"
             android:text="Register"
             android:background="@color/orange"/>
@@ -81,7 +73,8 @@
             android:layout_below="@+id/txtWarning"
             android:layout_marginTop="50dp"
             android:textColor="@color/blue"
-            android:id="@+id/txtLogin"/>
+            android:id="@+id/txtLogin"
+            />
 
     </RelativeLayout>
 
